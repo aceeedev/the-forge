@@ -58,10 +58,9 @@ public class GameManager : MonoBehaviour
         currentPhase = CurrentPhase.Draft;
         currentRound = 1;
 
-        // set situations and pool cards
-        situation = "The kingdom is under attack by a horde of goblins!";
-        
+        // select situation and pool cards
         DeckManager.inst.SelectPoolCards();
+        DeckManager.inst.SelectSituationCard();
         DeckManager.inst.player1Deck = new PlayerDeck();
         DeckManager.inst.player2Deck = new PlayerDeck();
     }

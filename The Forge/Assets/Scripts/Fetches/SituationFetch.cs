@@ -13,6 +13,6 @@ public class SituationFetch : MonoBehaviour
 
     void Update()
     {
-        cardText.text = GameManager.inst.situation;
+        cardText.text = DeckManager.inst.situation;
     }
 }

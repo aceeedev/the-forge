@@ -57,6 +57,8 @@ public class DeckManager : MonoBehaviour
 
     public static DeckManager inst;
 
+    public string situation;
+
     public List<Tuple<string, string>> poolCards;
 
     public PlayerDeck player1Deck;
@@ -88,6 +90,16 @@ public class DeckManager : MonoBehaviour
     void Start()
     {
         poolCards = new List<Tuple<string, string>>();
+    }
+
+    public void SelectSituationCard()
+    {
+        if (situationCards.Count() == 0) {
+            return;
+        }
+        int randomIndex = UnityEngine.Random.Range(0, situationCards.Count());
+        situation = situationCards[randomIndex];
+        situationCards.RemoveAt(randomIndex);
     }
 
     public void SelectPoolCards()
