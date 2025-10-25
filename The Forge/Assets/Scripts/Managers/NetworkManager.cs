@@ -2,6 +2,7 @@ using UnityEngine;
 using Colyseus;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -10,15 +11,19 @@ public class NetworkManager : MonoBehaviour
     ColyseusClient colyseusClient;
     ColyseusRoom<MyRoomState> room;
 
-    public List<string> attributeCards;
-    public string situationCard;
+    public string situation;
+    public List<string> poolCards;
+    public List<string> player1Cards;
+    public List<string> player2Cards;
 
     public List<string> moves;
+
+    public Texture2D character1Texture;
+    public Texture2D character2Texture;
 
     void Awake()
     {
         // Basic singleton pattern. Make sure there is only ever 1 GameManager in the scene and updates inst accordingly.
-
         if (inst == null)
         {
             inst = this;
@@ -38,8 +43,11 @@ public class NetworkManager : MonoBehaviour
         colyseusClient = new ColyseusClient("ws://localhost:2567");
 
         // initialize values
-        attributeCards = Enumerable.Repeat("", 8).ToList();
-        situationCard = "";
+        situation = "";
+        poolCards = Enumerable.Repeat("", 8).ToList();
+
+        player1Cards = Enumerable.Repeat("", 6).ToList();
+        player2Cards = Enumerable.Repeat("", 6).ToList();
 
         moves = Enumerable.Repeat("", 4).ToList();
 
@@ -57,20 +65,26 @@ public class NetworkManager : MonoBehaviour
         {
             // connection failed 
             Debug.LogWarning("Not able to connect to colyseus room: " + e.Message);
-            
+
             // TODO: remove. just dummy data
-            attributeCards = new List<string>
+            situation = "Situation 1";
+
+            poolCards = new List<string>
             {
-                "Attr1", "Attr2", "Attr3", "Attr4",
-                "Attr5", "Attr6", "Attr7", "Attr8"
+                "Head1", "Head2",
+                "Body1", "Body2",
+                "Limb1", "Limb2",
+                "Ability1", "Ability2"
             };
-            situationCard = "Situation 1";
 
             moves = new List<string>
             {
                 "Move1", "Move2",
                 "Move3", "Move4"
             };
+
+            character1Texture = Texture2D.grayTexture;
+            character2Texture = Texture2D.grayTexture;
         }
     }
 }
