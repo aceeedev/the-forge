@@ -26,32 +26,24 @@ public class DeckManager : MonoBehaviour
         "Fix a lightbulb"
     };
     
-    public List<Tuple<string, string>> itemCards = new List<Tuple<string, string>>
+    public List<string> itemCards = new List<string>
     {
-        new Tuple<string, string>("Sword", "To cut stuff"),
-        new Tuple<string, string>("Gun", "To shoot stuff"),
-        new Tuple<string, string>("Shield", "To block stuff")
+        "Sword", "Gun", "Shield"
     };
 
-    public List<Tuple<string, string>> talentCards = new List<Tuple<string, string>>
+    public List<string> talentCards = new List<string>
     {
-        new Tuple<string, string>("Smart", "To think quickly"),
-        new Tuple<string, string>("Strong", "To lift heavy stuff"),
-        new Tuple<string, string>("Fast", "To run fast")
+        "Smart", "Strong", "Fast"
     };
 
-    public List<Tuple<string, string>> abilityCards = new List<Tuple<string, string>>
+    public List<string> abilityCards = new List<string>
     {
-        new Tuple<string, string>("Teleport", "To teleport to a random location"),
-        new Tuple<string, string>("Invisibility", "To become invisible"),
-        new Tuple<string, string>("Healing", "To heal yourself")
+        "Teleportation", "Invisibility", "Healing"
     };
 
-    public List<Tuple<string, string>> clothesCards = new List<Tuple<string, string>>   
+    public List<string> clothesCards = new List<string>   
     {
-        new Tuple<string, string>("Shirt", "To wear"),
-        new Tuple<string, string>("Pants", "To wear"),
-        new Tuple<string, string>("Hat", "To wear")
+        "Shirt", "Pants", "Hat"
     };
 
 
@@ -59,7 +51,7 @@ public class DeckManager : MonoBehaviour
 
     public string situation;
 
-    public List<Tuple<string, string>> poolCards;
+    public List<string> poolCards;
 
     public PlayerDeck player1Deck;
     public PlayerDeck player2Deck;
@@ -89,7 +81,7 @@ public class DeckManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        poolCards = new List<Tuple<string, string>>();
+        poolCards = new List<string>();
     }
 
     public void SelectSituationCard()
@@ -104,7 +96,7 @@ public class DeckManager : MonoBehaviour
 
     public void SelectPoolCards()
     {
-        poolCards = new List<Tuple<string, string>> {
+        poolCards = new List<string> {
             drawCharacterCard(itemCards), drawCharacterCard(itemCards),
             drawCharacterCard(talentCards), drawCharacterCard(talentCards),
             drawCharacterCard(abilityCards), drawCharacterCard(abilityCards),
@@ -112,7 +104,7 @@ public class DeckManager : MonoBehaviour
         };
     }
 
-    private Tuple<string, string> drawCharacterCard(List<Tuple<string, string>> deck) {
+    private string drawCharacterCard(List<string> deck) {
         if (deck.Count() == 0) {
             return null;
         }
@@ -121,7 +113,7 @@ public class DeckManager : MonoBehaviour
         int randomIndex = UnityEngine.Random.Range(0, deck.Count());
         
         // Create result dictionary with one card
-        Tuple<string, string> selectedCard = deck[randomIndex];
+        string selectedCard = deck[randomIndex];
         
         // Remove from the deck
         deck.RemoveAt(randomIndex);
