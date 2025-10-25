@@ -48,12 +48,22 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        RestartGame();
         SceneManager.LoadScene("DraftScene");
     }
     
     public void RestartGame()
     {
+        currentTurn = CurrentTurn.Player1;
+        currentPhase = CurrentPhase.Draft;
+        currentRound = 1;
+
+        // set situations and pool cards
+        situation = "The kingdom is under attack by a horde of goblins!";
         
+        DeckManager.inst.SelectPoolCards();
+        DeckManager.inst.player1Deck = new PlayerDeck();
+        DeckManager.inst.player2Deck = new PlayerDeck();
     }
 
     public void NextTurn()

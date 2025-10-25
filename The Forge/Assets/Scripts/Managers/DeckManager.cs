@@ -51,19 +51,13 @@ public class DeckManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player1Deck = new PlayerDeck();
-        player2Deck = new PlayerDeck();
-
         poolCards = Enumerable.Repeat("", 8).ToList();
-
-        // dummy data
-        SelectPoolCards();
     }
 
     public void SelectPoolCards()
     {
         // make sure the cards are visible
-        
+
         // dummy data
         poolCards = new List<string> {
             "Card A", "Card B",
