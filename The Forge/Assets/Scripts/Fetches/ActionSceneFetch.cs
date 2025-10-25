@@ -47,10 +47,27 @@ public class ActionSceneFetch : MonoBehaviour
     {
         loading = true;
 
-
         // Build object graph and convert to JSON
-        var msg = new Message { role = "user", content = "say hi!" };
-        var container = new MessageContainer { messages = new[] { msg } };
+        var container = new MessageContainer { messages = new[] {
+            new Message { 
+                role = "system",
+                content =  "You are the narrator for an epic battle game called 'The Forge'. " +
+                            "Players create characters by combining attribute cards, and you determine " +
+                            "the outcome of a certain situation through storytelling. Your responses should be " +
+                            "creative, engaging, and consider how different attributes would interact in " +
+                            "the situation. Focus on creating dramatic moments and unexpected twists based on " +
+                            "the characters' unique combinations of attributes. Keep responses concise " +
+                            "but vivid, around 1 sentence per move description."
+            },
+            new Message { 
+                role = "user",
+                content =
+                        "Player 1: \n" +
+                        "Player 2: A fighter with [Attributes: Defensive, Stone-skinned, Giant]\n" +
+                        "Situation: Ancient Arena\n" +
+                        "Phase: Beginning"
+            },
+        } };
 
         yield return StartCoroutine(SendPost("prompt-response", JsonUtility.ToJson(container), (response) =>
         {
