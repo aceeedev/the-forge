@@ -24,7 +24,6 @@ public class NetworkManager : MonoBehaviour
     void Awake()
     {
         // Basic singleton pattern. Make sure there is only ever 1 GameManager in the scene and updates inst accordingly.
-
         if (inst == null)
         {
             inst = this;
