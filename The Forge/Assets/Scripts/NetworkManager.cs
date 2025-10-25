@@ -2,6 +2,7 @@ using UnityEngine;
 using Colyseus;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class NetworkManager : MonoBehaviour
     public List<string> player2Cards;
 
     public List<string> moves;
+
+    public Texture2D character1Texture;
+    public Texture2D character2Texture;
 
     void Awake()
     {
@@ -79,6 +83,9 @@ public class NetworkManager : MonoBehaviour
                 "Move1", "Move2",
                 "Move3", "Move4"
             };
+
+            character1Texture = Texture2D.grayTexture;
+            character2Texture = Texture2D.grayTexture;
         }
     }
 }
