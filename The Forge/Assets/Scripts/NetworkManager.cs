@@ -9,8 +9,11 @@ public class NetworkManager : MonoBehaviour
 
     ColyseusClient colyseusClient;
     ColyseusRoom<MyRoomState> room;
+
     public List<string> attributeCards;
     public string situationCard;
+
+    public List<string> moves;
 
     void Awake()
     {
@@ -34,9 +37,11 @@ public class NetworkManager : MonoBehaviour
     {
         colyseusClient = new ColyseusClient("ws://localhost:2567");
 
-        // initialize attributeCards list
+        // initialize values
         attributeCards = Enumerable.Repeat("", 8).ToList();
         situationCard = "";
+
+        moves = Enumerable.Repeat("", 4).ToList();
 
         // try to connect to the room
         initialRoomConnection();
@@ -60,6 +65,12 @@ public class NetworkManager : MonoBehaviour
                 "Attr5", "Attr6", "Attr7", "Attr8"
             };
             situationCard = "Situation 1";
+
+            moves = new List<string>
+            {
+                "Move1", "Move2",
+                "Move3", "Move4"
+            };
         }
     }
 }
