@@ -43,3 +43,4 @@ httpServer.listen(2567, '0.0.0.0', () => {
   console.log("Colyseus server running on ws://0.0.0.0:2567");
   console.log("Access from your network at ws://<your-ip>:2567");
 });
+
