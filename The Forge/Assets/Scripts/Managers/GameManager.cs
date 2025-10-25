@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,15 +37,23 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentTurn = CurrentTurn.Player1;
-
-        situation = "Situation 1";
+        
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("DraftScene");
+    }
+    
+    public void RestartGame()
+    {
+        
     }
 
     public void NextTurn()
