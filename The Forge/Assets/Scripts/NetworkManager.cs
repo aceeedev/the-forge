@@ -10,8 +10,10 @@ public class NetworkManager : MonoBehaviour
     ColyseusClient colyseusClient;
     ColyseusRoom<MyRoomState> room;
 
-    public List<string> attributeCards;
-    public string situationCard;
+    public string situation;
+    public List<string> poolCards;
+    public List<string> player1Cards;
+    public List<string> player2Cards;
 
     public List<string> moves;
 
@@ -38,8 +40,11 @@ public class NetworkManager : MonoBehaviour
         colyseusClient = new ColyseusClient("ws://localhost:2567");
 
         // initialize values
-        attributeCards = Enumerable.Repeat("", 8).ToList();
-        situationCard = "";
+        situation = "";
+        poolCards = Enumerable.Repeat("", 8).ToList();
+
+        player1Cards = Enumerable.Repeat("", 6).ToList();
+        player2Cards = Enumerable.Repeat("", 6).ToList();
 
         moves = Enumerable.Repeat("", 4).ToList();
 
@@ -57,14 +62,17 @@ public class NetworkManager : MonoBehaviour
         {
             // connection failed 
             Debug.LogWarning("Not able to connect to colyseus room: " + e.Message);
-            
+
             // TODO: remove. just dummy data
-            attributeCards = new List<string>
+            situation = "Situation 1";
+
+            poolCards = new List<string>
             {
-                "Attr1", "Attr2", "Attr3", "Attr4",
-                "Attr5", "Attr6", "Attr7", "Attr8"
+                "Head1", "Head2",
+                "Body1", "Body2",
+                "Limb1", "Limb2",
+                "Ability1", "Ability2"
             };
-            situationCard = "Situation 1";
 
             moves = new List<string>
             {
