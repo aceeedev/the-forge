@@ -30,7 +30,7 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
         switch (cardType)
         {
             case CardType.Pool:
-                cardText.text = DeckManager.inst.poolCards[cardIndex].Item1;
+                cardText.text = DeckManager.inst.poolCards[cardIndex];
 
                 break;
             case CardType.Player1:
@@ -84,15 +84,15 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
 
             if (GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1)
             {
-                DeckManager.inst.player1Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[cardIndex].Item1;
+                DeckManager.inst.player1Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[cardIndex];
 
-                DeckManager.inst.player2Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[otherPoolCardIndex].Item1;
+                DeckManager.inst.player2Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[otherPoolCardIndex];
             }
             else
             {
-                DeckManager.inst.player2Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[cardIndex].Item1;
+                DeckManager.inst.player2Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[cardIndex];
 
-                DeckManager.inst.player1Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[otherPoolCardIndex].Item1;
+                DeckManager.inst.player1Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[otherPoolCardIndex];
             }
 
             // remove the cards visually from the pool
