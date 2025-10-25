@@ -7,7 +7,14 @@ public class GameManager : MonoBehaviour
     public static GameManager inst;
 
     public enum CurrentTurn { Player1, Player2 }
-    [SerializeField] public CurrentTurn currentTurn;
+    public CurrentTurn currentTurn;
+
+    public enum CurrentPhase { Draft, Action }
+    public CurrentPhase currentPhase = CurrentPhase.Draft;
+
+    public int currentRound = 1;
+
+    public string situation;
 
     void Awake()
     {
@@ -30,6 +37,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         currentTurn = CurrentTurn.Player1;
+
+        situation = "Situation 1";
     }
 
     // Update is called once per frame

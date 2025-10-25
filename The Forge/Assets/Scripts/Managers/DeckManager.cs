@@ -10,6 +10,11 @@ public class PlayerDeck
     {
         cards = Enumerable.Repeat("", 4).ToList();
     }
+
+    public bool IsDeckFull()
+    {
+        return !cards.Contains("");
+    }
 }
 
 public class DeckManager : MonoBehaviour
@@ -20,6 +25,11 @@ public class DeckManager : MonoBehaviour
 
     public PlayerDeck player1Deck;
     public PlayerDeck player2Deck;
+
+    /// <summary>
+    ///  for checking if its the last turn on rounds of drafts >=2
+    /// </summary>
+    public bool lastTurn = false;
 
     void Awake()
     {
@@ -47,16 +57,19 @@ public class DeckManager : MonoBehaviour
         poolCards = Enumerable.Repeat("", 8).ToList();
 
         // dummy data
+        SelectPoolCards();
+    }
+
+    public void SelectPoolCards()
+    {
+        // make sure the cards are visible
+        
+        // dummy data
         poolCards = new List<string> {
             "Card A", "Card B",
             "Card C", "Card D",
             "Card E", "Card F",
             "Card G", "Card H"
         };
-    }
-
-    public void SelectPoolCards()
-    {
-        
     }
 }

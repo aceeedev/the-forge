@@ -110,6 +110,22 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
                 }
             }
 
+            // check if draft was ended early
+            if (DeckManager.inst.lastTurn)
+            {
+                GameManager.inst.currentPhase = GameManager.CurrentPhase.Action;
+
+                DeckManager.inst.lastTurn = false;
+            }
+
+            // check if all decks are full and ready to go to the next phase
+            else if (DeckManager.inst.player1Deck.IsDeckFull() &&
+                DeckManager.inst.player2Deck.IsDeckFull())
+            {
+                GameManager.inst.currentPhase = GameManager.CurrentPhase.Action;
+            }
+
+            // TODO: maybe switch who goes next?
             GameManager.inst.NextTurn();
         }
     }
