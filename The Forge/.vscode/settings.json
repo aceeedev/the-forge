@@ -68,6 +68,7 @@
     },
     "dotnet.defaultSolution": "The Forge.sln",
     "cSpell.words": [
+        "Behaviour",
         "Colyseus"
     ]
 }

@@ -36,7 +36,7 @@ const gameServer = new CustomServer({
 });
 
 // Register rooms handler.
-gameServer.define("myRoom ", MyRoom);
+gameServer.define("hello", MyRoom);
 
 // Start listening on port 2567 on all network interfaces.
 httpServer.listen(2567, '0.0.0.0', () => {
