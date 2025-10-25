@@ -66,5 +66,8 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
     },
-    "dotnet.defaultSolution": "The Forge.sln"
+    "dotnet.defaultSolution": "The Forge.sln",
+    "cSpell.words": [
+        "Colyseus"
+    ]
 }
