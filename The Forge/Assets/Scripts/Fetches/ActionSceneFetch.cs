@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
+using UnityEditor.Search;
 
 
 [System.Serializable]
@@ -69,8 +70,16 @@ public class ActionSceneFetch : MonoBehaviour
     {
         loading = true;
 
+        // setup the situation
+        yield return StartCoroutine(SendGet<string>("prompt-response", $"The situation is: {DeckManager.inst.situation}"));
+
+        // generate moves
         yield return GenerateMoveDescriptions(1);
         yield return GenerateMoveDescriptions(2);
+
+        // generate images
+        // yield return GenerateCharacterImage(1);
+        // yield return GenerateCharacterImage(2);
 
         loading = false;
     }
@@ -79,33 +88,51 @@ public class ActionSceneFetch : MonoBehaviour
     {
         string cardsToString = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToString() : DeckManager.inst.player2Deck.cardsToString();
 
-        var container = new MessageContainer
-        {
-            messages = new[] {
-            new Message {
-                role = "system",
-                content =  "You are the narrator for an epic battle game called 'The Forge'. " +
-                            "Players create characters by combining attribute cards, and you determine " +
-                            "the outcome of a certain situation through storytelling. Your responses should be " +
-                            "creative, engaging, and consider how different attributes would interact in " +
-                            "the situation. Focus on creating dramatic moments and unexpected twists based on " +
-                            "the characters' unique combinations of attributes. Keep responses concise " +
-                            "but vivid, around 7 words per move description."
-            },
-            new Message {
-                role = "user",
-                content =
-                        $"The player has has: {cardsToString}\n" +
-                        "------\n" +
-                        $"Situation: {DeckManager.inst.situation}\n" +
-                        $"Phase: {GameManager.inst.currentActionPhase.ToString()}"
-            },
-        }
-        };
+        string query =
+                    $"The player has has: {cardsToString}\n" +
+                    "------\n" +
+                    $"Phase: {GameManager.inst.currentActionPhase.ToString()}";
+
 
         bool done = false;
 
-        yield return StartCoroutine(SendPost<ResponseWrapper>("generate-move-descriptions", JsonUtility.ToJson(container), (ResponseWrapper response) =>
+        yield return StartCoroutine(SendGet("generate-move-descriptions", query, (ResponseWrapper response) =>
+        {
+            if (response == null)
+            {
+                Debug.LogError("Failed to parse moves");
+                return;
+            }
+
+            string[] moves = JsonUtility.FromJson<Moves>(response.response).ToArray();
+
+            int index = 0;
+            foreach (Transform child in (playerNum == 1 ? player1ActionMenuObject : player2ActionMenuObject).transform)
+            {
+                child.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = moves[index];
+
+                index++;
+            }
+
+            done = true;
+        }));
+
+        yield return new WaitUntil(() => done);
+    }
+    
+    private IEnumerator GenerateCharacterImage(int playerNum)
+    {
+        string cardsToString = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToString() : DeckManager.inst.player2Deck.cardsToString();
+        
+        string query =
+                    $"The player has has: {cardsToString}\n" +
+                    "------\n" +
+                    $"Phase: {GameManager.inst.currentActionPhase.ToString()}";
+        
+
+        bool done = false;
+
+        yield return StartCoroutine(SendGet("generate-move-descriptions", query, (ResponseWrapper response) =>
         {
             if (response == null)
             {
@@ -130,27 +157,36 @@ public class ActionSceneFetch : MonoBehaviour
     }
 
 
-    private IEnumerator SendPost<T>(string endpoint, string payload, Action<T> onComplete)
+    private IEnumerator SendGet<T>(string endpoint, string query = null, Action<T> onComplete = null)
     {
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(payload);
-        using (UnityWebRequest req = new UnityWebRequest(baseUri + "/" + endpoint, "POST"))
+    // Build the full URL with optional query parameter
+    string url = baseUri + "/" + endpoint;
+    if (!string.IsNullOrEmpty(query))
+    {
+        url += "?text=" + UnityWebRequest.EscapeURL(query);
+    }
+
+    using (UnityWebRequest req = UnityWebRequest.Get(url))
+    {
+        req.SetRequestHeader("Content-Type", "application/json");
+        req.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
         {
-            req.SetRequestHeader("Content-Type", "application/json");
-            req.uploadHandler = new UploadHandlerRaw(bodyRaw) { contentType = "application/json" };
-            req.downloadHandler = new DownloadHandlerBuffer();
+            Debug.LogError("GET error: " + req.error);
+        }
+        else
+        {
+            Debug.Log("GET response: " + req.downloadHandler.text);
 
-            yield return req.SendWebRequest();
-
-            if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
+            if (onComplete != null)
             {
-                Debug.LogError("POST error: " + req.error);
-            }
-            else
-            {
-                Debug.Log(req.downloadHandler.text);
-
-                onComplete?.Invoke(JsonUtility.FromJson<T>(req.downloadHandler.text));
+                onComplete(JsonUtility.FromJson<T>(req.downloadHandler.text));
             }
         }
     }
+}
+
 }
