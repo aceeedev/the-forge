@@ -25,7 +25,9 @@ public class HoverRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if ( GameManager.inst != null && GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1 )
+        if ( GameManager.inst.cardsMoving )
+            return;
+        if ( GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1 )
             targetRotation = originalRotation * Quaternion.Euler(0, 0, hoverRotation);
         else
             targetRotation = originalRotation * Quaternion.Euler(0, 0, -hoverRotation);

@@ -25,32 +25,39 @@ public class PlayerDeck
 
 public class DeckManager : MonoBehaviour
 {
-    public List<string> situationCards = new List<string> {
-        "Assemble IKEA furniture without directions",
-        "Teach a classroom Physics",
-        "Fix a lightbulb"
-    };
-    
-    public List<string> itemCards = new List<string>
-    {
-        "Sword", "Gun", "Shield"
-    };
+    public List<string> situationCards;
+    public List<string> itemCards;
+    public List<string> talentCards;
+    public List<string> abilityCards;
+    public List<string> clothesCards;
 
-    public List<string> talentCards = new List<string>
+    public void Start()
     {
-        "Smart", "Strong", "Fast"
-    };
-
-    public List<string> abilityCards = new List<string>
-    {
-        "Teleportation", "Invisibility", "Healing"
-    };
-
-    public List<string> clothesCards = new List<string>   
-    {
-        "Shirt", "Pants", "Hat"
-    };
-
+        situationCards = new List<string> {
+            "Assemble IKEA furniture without directions",
+            "Teach a classroom Physics",
+            "Fix a lightbulb",
+            "Parallel park a car on a hill",
+            "Win a hot dog eating contest"
+        };
+        itemCards = new List<string> {
+            "Nunchucks", "Boomerang", "Balloon", "Frying Pan", "Water Gun",
+            "Money Bag", "Deoderant", "Laser Pointer", "Spork", "Torch"
+        };
+        talentCards = new List<string> {
+            "Juggling", "Climbing", "Dancing", "Martial Arts", "Cooking",
+            "Programming", "Gardening", "Chess", "Gymnastics", "Singing"
+        };
+        abilityCards = new List<string> {
+            "Teleportation", "Invisibility", "Healing", "Telekinesis", "Super Speed",
+            "Fire Breath", "Flight", "X-Ray Vision", "Lava Arms", "Animal Control"
+        };
+        clothesCards = new List<string> {
+            "Tuxedo", "Pajamas", "Cat Ears", "Crown", "Jetpack",
+            "Cape", "Magnet Boots", "Halo", "Suit of Armor", "Helmet"
+        };
+        poolCards = new List<string>();
+    }
 
     public static DeckManager inst;
 
@@ -81,12 +88,6 @@ public class DeckManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        poolCards = new List<string>();
     }
 
     public void SelectSituationCard()
