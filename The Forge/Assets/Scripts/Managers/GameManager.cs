@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     public bool cardsMoving = false;
 
-    public bool lastTurn = false;
+    public int lastTurn = -1;
 
     public string award1Winner = "";
     public string award2Winner = "";
@@ -90,11 +90,15 @@ public class GameManager : MonoBehaviour
         // if draft phase
         if (currentPhase == CurrentPhase.Draft)
         {
-            if (GameManager.inst.lastTurn)
+            if (lastTurn == 1)
             {
                 moveToNextPhase = true;
 
-                GameManager.inst.lastTurn = false;
+                lastTurn = -1;
+            }
+            else if (lastTurn > 1)
+            {
+                lastTurn -= 1;
             }
 
             // check if pool is empty 

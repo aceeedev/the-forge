@@ -11,10 +11,10 @@ export interface Message {
 }
 
 const MoveDescriptions = z.object({
-    move_1: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, or chaos given the situation needs), and clearly signifying how it is used."),
-    move_2: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, or chaos given the situation needs), and clearly signifying how the character it is used."),
-    move_3: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, or chaos given the situation needs), and clearly signifying how it is used."),
-    move_4: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, or chaos given the situation needs), and clearly signifying how it is used."),
+    move_1: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
+    move_2: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how the character it is used."),
+    move_3: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
+    move_4: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
 }).strict();
 
 const WhoWon = z.object({

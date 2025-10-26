@@ -7,11 +7,8 @@ TagManager:
   - WinnerText
   - Dialogue
   - Award1Winner
-  - Award2Theme
   - Award2Winner
-  - Award3Theme
-  - Award3Winner
-  - OverallWinner
+  - DraftButton
   layers:
   - Default
   - TransparentFX
