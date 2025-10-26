@@ -161,12 +161,59 @@ public class ActionSceneFetch : MonoBehaviour
         tex.Apply();
         return tex;
     }
+
+    private Texture2D ApplyFeatheredEdge(Texture2D source, Rect uvRect, float featherAmount = 0.15f)
+    {
+        int width = source.width;
+        int height = source.height;
+        
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Color[] pixels = source.GetPixels();
+        
+        int featherPixels = Mathf.Max(1, (int)(Mathf.Min(width, height) * featherAmount));
+        
+        // Calculate the visible region in pixel coordinates
+        int visibleLeft = (int)(uvRect.x * width);
+        int visibleRight = (int)((uvRect.x + uvRect.width) * width);
+        int visibleBottom = (int)(uvRect.y * height);
+        int visibleTop = (int)((uvRect.y + uvRect.height) * height);
+        
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int index = y * width + x;
+                Color c = pixels[index];
+                
+                // Calculate distance from the VISIBLE edges (after cropping)
+                float distLeft = x - visibleLeft;
+                float distRight = visibleRight - 1 - x;
+                float distTop = visibleTop - 1 - y;
+                float distBottom = y - visibleBottom;
+                
+                // Get minimum distance to any visible edge
+                float minDist = Mathf.Min(distLeft, Mathf.Min(distRight, Mathf.Min(distTop, distBottom)));
+                
+                // Apply smooth feathering
+                float alpha = Mathf.Clamp01(minDist / featherPixels);
+                alpha = Mathf.SmoothStep(0, 1, alpha); // Smooth the transition
+                
+                c.a *= alpha;
+                pixels[index] = c;
+            }
+        }
+        
+        tex.SetPixels(pixels);
+        tex.Apply();
+        return tex;
+    }
     
     private IEnumerator GenerateCharacterImage(int playerNum)
     {
         string cardsToPrompt = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToPrompt() : DeckManager.inst.player2Deck.cardsToPrompt();
+        string directionToFace = playerNum == 1 ? "right" : "left";
 
-        string query = $"A colorful, bold, and realistic drawing of a character in action pose that has {cardsToPrompt}. The character is against a pure white background with even lighting and no additional props, characters, or scenery.";
+        string query = $"A colorful and expressive drawing of a character with bold features that is striking an action pose facing {directionToFace} realistically using their {cardsToPrompt}. The character is captured against a pure white background with even lighting and no other text, props, characters, and scenery.";
 
         bool done = false;
 
@@ -183,14 +230,32 @@ public class ActionSceneFetch : MonoBehaviour
             Texture2D tex = new Texture2D(2, 2); // temporary size, will resize automatically
             if (tex.LoadImage(response)) // loads PNG/JPG into texture
             {
+                // Calculate crop region first
+                Vector2 targetSize = rawImage.rectTransform.sizeDelta;
+                float targetAspect = targetSize.x / targetSize.y;
+                float textureAspect = (float)tex.width / tex.height;
+
+                Rect uvRect;
+                if (textureAspect > targetAspect)
+                {
+                    // Texture is wider - crop horizontally
+                    float scale = targetAspect / textureAspect;
+                    float offset = (1f - scale) / 2f;
+                    uvRect = new Rect(offset, 0, scale, 1);
+                }
+                else
+                {
+                    // Texture is taller - crop vertically
+                    float scale = textureAspect / targetAspect;
+                    float offset = (1f - scale) / 2f;
+                    uvRect = new Rect(0, offset, 1, scale);
+                }
+
+                // Apply feathered edges based on the visible region
+                tex = ApplyFeatheredEdge(tex, uvRect, 0.1f);
+                
                 rawImage.texture = tex;
-
-                // resize the image
-                const float targetWidth = 250f;
-                float aspectRatio = (float)tex.height / tex.width;
-                float targetHeight = targetWidth * aspectRatio;
-
-                rawImage.rectTransform.sizeDelta = new Vector2(targetWidth, targetHeight);
+                rawImage.uvRect = uvRect;
             }
 
             done = true;
