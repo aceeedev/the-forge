@@ -24,6 +24,11 @@ public class PlayerDeck
     {
         return $"Move 1: {cards[0]}, Move 2: {cards[1]}, Move 3: {cards[2]}, Move 4: {cards[3]}";
     }
+
+    public string cardsToPrompt()
+    {
+        return $"item {cards[0]}, talent {cards[1]}, ability {cards[2]}, and clothes {cards[3]}";
+    }
 }
 
 public class DeckManager : MonoBehaviour

@@ -164,9 +164,9 @@ public class ActionSceneFetch : MonoBehaviour
     
     private IEnumerator GenerateCharacterImage(int playerNum)
     {
-        string cardsToString = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToString() : DeckManager.inst.player2Deck.cardsToString();
+        string cardsToPrompt = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToPrompt() : DeckManager.inst.player2Deck.cardsToPrompt();
 
-        string query = $"Against a pure white background, with even lighting and no additional props/scenery, create a character that has: {cardsToString}";
+        string query = $"A colorful, bold, and realistic drawing of a character in action pose that has {cardsToPrompt}. The character is against a pure white background with even lighting and no additional props, characters, or scenery.";
 
         bool done = false;
 
