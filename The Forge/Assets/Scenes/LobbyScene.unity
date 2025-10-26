@@ -160,7 +160,7 @@ MonoBehaviour:
   clothesCards: []
   situation: 
   poolCards: []
-  lastTurn: 0
+  situationPromptLoading: 0
 --- !u!114 &156801717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,8 +195,9 @@ MonoBehaviour:
   currentTurn: 0
   currentPhase: 0
   currentRound: 1
-  currentActionPhase: 0
+  currentActionPhase: 
   cardsMoving: 0
+  lastTurn: 0
 --- !u!4 &156801719
 Transform:
   m_ObjectHideFlags: 0
