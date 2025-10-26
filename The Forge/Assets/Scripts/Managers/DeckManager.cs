@@ -1,7 +1,9 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class PlayerDeck
 {
@@ -72,6 +74,7 @@ public class DeckManager : MonoBehaviour
     ///  for checking if its the last turn on rounds of drafts >=2
     /// </summary>
     public bool lastTurn = false;
+    private string baseUri = "http://localhost:3000";
 
     void Awake()
     {
@@ -90,14 +93,62 @@ public class DeckManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SelectSituationCard()
+    public IEnumerator SelectSituationCard()
     {
         if (situationCards.Count() == 0) {
-            return;
+            yield break;
         }
         int randomIndex = UnityEngine.Random.Range(0, situationCards.Count());
         situation = situationCards[randomIndex];
         situationCards.RemoveAt(randomIndex);
+        yield return StartCoroutine(SendGet<string>("prompt-response", $"The situation is: {DeckManager.inst.situation}"));
+    }
+
+    private IEnumerator SendGet<T>(string endpoint, string query = null, Action<T> onComplete = null, bool passAsJson = false)
+    {
+        string url = baseUri + "/" + endpoint;
+        if (!string.IsNullOrEmpty(query))
+        {
+            url += "?text=" + UnityWebRequest.EscapeURL(query);
+        }
+
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        {
+            req.SetRequestHeader("Content-Type", "application/json");
+            req.downloadHandler = new DownloadHandlerBuffer();
+
+            yield return req.SendWebRequest();
+
+            if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("GET error: " + req.error);
+            }
+            else
+            {
+                Debug.Log("GET response: " + req.downloadHandler.text);
+
+                if (onComplete != null)
+                {
+                    if (passAsJson)
+                    {
+                        T obj = JsonUtility.FromJson<T>(req.downloadHandler.text);
+                        onComplete(obj);
+                    }
+                    else
+                    {
+                        // Ensure T is byte[] or compatible
+                        if (typeof(T) == typeof(byte[]))
+                        {
+                            onComplete((T)(object)req.downloadHandler.data);
+                        }
+                        else
+                        {
+                            Debug.LogError("Cannot pass raw data to type " + typeof(T));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void SelectPoolCards()

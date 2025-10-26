@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
         // select situation and pool cards
         DeckManager.inst.SelectPoolCards();
-        DeckManager.inst.SelectSituationCard();
+        StartCoroutine(DeckManager.inst.SelectSituationCard());
         DeckManager.inst.player1Deck = new PlayerDeck();
         DeckManager.inst.player2Deck = new PlayerDeck();
     }

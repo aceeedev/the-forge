@@ -73,7 +73,7 @@ public class ActionSceneFetch : MonoBehaviour
         loading = true;
 
         // setup the situation
-        yield return StartCoroutine(SendGet<string>("prompt-response", $"The situation is: {DeckManager.inst.situation}"));
+        // yield return StartCoroutine(SendGet<string>("prompt-response", $"The situation is: {DeckManager.inst.situation}"));
 
         // generate moves
         yield return GenerateMoveDescriptions(1);
