@@ -2,6 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+
+public class AwardsResponseWrapper
+{
+    public string award_1_winner;
+    public string award_2_winner;
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +17,7 @@ public class GameManager : MonoBehaviour
     public enum CurrentTurn { Player1, Player2 }
     public CurrentTurn currentTurn;
 
-    public enum CurrentPhase { Draft, Action }
+    public enum CurrentPhase { Draft, Action, Final }
     public CurrentPhase currentPhase = CurrentPhase.Draft;
 
     public int currentRound = 1;
@@ -21,6 +28,9 @@ public class GameManager : MonoBehaviour
     public bool cardsMoving = false;
 
     public bool lastTurn = false;
+
+    public string award1Winner = "";
+    public string award2Winner = "";
 
     void Awake()
     {
@@ -137,18 +147,27 @@ public class GameManager : MonoBehaviour
         }
 
         // switch current turn
-        if (currentTurn == CurrentTurn.Player1)
-        {
-            currentTurn = CurrentTurn.Player2;
-        }
-        else
-        {
-            currentTurn = CurrentTurn.Player1;
-        }
+
 
         if (moveToNextPhase)
         {
-            if (currentPhase == CurrentPhase.Draft)
+            if (currentRound == 6 && currentPhase == CurrentPhase.Action)
+            {
+                currentPhase = CurrentPhase.Final;
+                StartCoroutine(MyUtils.SendGet("final-winner", "Based on the following situations and stories chosen by the players, decide the winner of the game.",
+                (ResponseWrapper response) =>
+                {
+                    Debug.Log("API Response received!");
+                    
+                    AwardsResponseWrapper awardsResponse = JsonUtility.FromJson<AwardsResponseWrapper>(response.response);
+                    award1Winner = awardsResponse.award_1_winner.Replace("_", " ");
+                    award2Winner = awardsResponse.award_2_winner.Replace("_", " ");
+                    Debug.Log("Awards set: award1Winner=" + award1Winner + ", award2Winner=" + award2Winner);
+                    // Load the scene after the data is received
+                    SceneManager.LoadScene("FinalScene");
+                }, true));
+            }
+            else if (currentPhase == CurrentPhase.Draft)
             {
                 currentPhase = CurrentPhase.Action;
                 currentActionPhase[0] = ActionPhase.Beginning;
@@ -165,6 +184,17 @@ public class GameManager : MonoBehaviour
                 currentRound += 1;
 
                 SceneManager.LoadScene("DraftScene");
+            }
+            currentTurn = currentRound % 2 == 0 ? CurrentTurn.Player1 : CurrentTurn.Player2;
+        }
+        else {
+            if (currentTurn == CurrentTurn.Player1)
+            {
+                currentTurn = CurrentTurn.Player2;
+            }
+            else
+            {
+                currentTurn = CurrentTurn.Player1;
             }
         }
     }

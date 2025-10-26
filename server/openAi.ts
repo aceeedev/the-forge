@@ -11,15 +11,20 @@ export interface Message {
 }
 
 const MoveDescriptions = z.object({
-    move_1: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
-    move_2: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
-    move_3: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
-    move_4: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
+    move_1: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic (like stealth, efficiency, or chaos) and clearly signifying how the character trait is used."),
+    move_2: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic (like stealth, efficiency, or chaos) and clearly signifying how the character trait is used."),
+    move_3: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic (like stealth, efficiency, or chaos) and clearly signifying how the character trait is used."),
+    move_4: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic (like stealth, efficiency, or chaos) and clearly signifying how the character trait is used."),
 }).strict();
 
 const WhoWon = z.object({
     winner: z.enum(["player_1", "player_2"]).describe("The player who won the match"),
     explanation: z.string().describe("A very detailed explanation of why the winner won this stage of the game.")
+}).strict();
+
+const FinalWinner = z.object({
+    award_1_winner: z.string().describe("In a sentence no more than 10 words, detail which player won the match by winning the most situations and any key traits that made them win."),
+    award_2_winner: z.string().describe("In a sentence no more than 10 words, detail which player made the best move in just one situation, explaining how it happened and at which point in the game they did it."),
 }).strict();
 
 class OpenAiService {
@@ -97,6 +102,22 @@ class OpenAiService {
         });
 
         // Return the parsed data as a JSON string
+        return JSON.stringify(response.output_parsed);
+    }
+
+    async final_winner(messages: Message[]) {
+        if (this.conversation == null) {
+            throw new Error("Conversation not initiated");
+        }
+        console.log("final_winner called with messages:", messages);
+        const response = await this.client.responses.parse({
+            conversation: this.conversation.id,
+            model: "gpt-4.1-mini",
+            input: messages as any,
+            text: { 
+                format: zodTextFormat(FinalWinner, "event"),
+            },
+        });
         return JSON.stringify(response.output_parsed);
     }
 }

@@ -32,6 +32,26 @@ app.get('/decide-winner', async (req, res) => {
     res.send({ response })
 })
 
+app.get('/final-winner', async (req, res) => {
+    try {
+        const text = req.query.text as string
+        console.log("final-winner endpoint called with text:", text)
+        const messages = [{ role: "user", content: text }] as Message[]
+        const response = await openAiService.final_winner(messages)
+        console.log("final_winner returned:", response)
+        
+        if (!response || response === "null") {
+            console.error("Response is null or empty")
+            return res.status(500).send({ error: "AI returned no response" })
+        }
+        
+        res.send({ response })
+    } catch (error) {
+        console.error("Error in final-winner endpoint:", error)
+        res.status(500).send({ error: String(error) })
+    }
+})
+
 app.get('/generate-image', async (req, res) => {
     const prompt = req.query.text as string
     const imageBuffer = await decartService.generateImage(prompt)
@@ -39,13 +59,13 @@ app.get('/generate-image', async (req, res) => {
     res.send(imageBuffer)
 })
 
-app.post('/edit-image', async (req, res) => {
-    const prompt = req.body.text as string
-    const image = req.body.image as Buffer
-    const imageBuffer = await decartService.editImage(prompt, image)
-    res.setHeader('Content-Type', 'image/png')
-    res.send(imageBuffer)
-})
+// app.post('/edit-image', async (req, res) => {
+//     const prompt = req.body.text as string
+//     const image = req.body.image as Buffer
+//     const imageBuffer = await decartService.editImage(prompt, image)
+//     res.setHeader('Content-Type', 'image/png')
+//     res.send(imageBuffer)
+// })
 
 app.listen(3000, () => {
     console.log('Server running on http://localhost:3000')

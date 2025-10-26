@@ -6,6 +6,12 @@ TagManager:
   tags:
   - WinnerText
   - Dialogue
+  - Award1Winner
+  - Award2Theme
+  - Award2Winner
+  - Award3Theme
+  - Award3Winner
+  - OverallWinner
   layers:
   - Default
   - TransparentFX
