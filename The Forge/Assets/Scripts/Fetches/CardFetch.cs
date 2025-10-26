@@ -55,23 +55,15 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
         {
             bool onOrOff = DeckManager.inst.player1Deck.cards[cardIndex] != "";
 
-            setActiveChildren(onOrOff);
+            MyUtils.SetActiveChildren(gameObject, onOrOff);
             image.enabled = onOrOff;
         }
         else if (player == CardType.Player2)
         {
             bool onOrOff = DeckManager.inst.player2Deck.cards[cardIndex] != "";
 
-            setActiveChildren(onOrOff);
+            MyUtils.SetActiveChildren(gameObject, onOrOff);
             image.enabled = onOrOff;
-        }
-    }
-
-    void setActiveChildren(bool value)
-    {
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(value);
         }
     }
 
@@ -100,7 +92,7 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
         rectTransform.position = targetWorldPosition;
         
         // After animation, disable the card
-        setActiveChildren(false);
+        MyUtils.SetActiveChildren(gameObject, false);
         image.enabled = false;
     }
 
