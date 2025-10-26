@@ -61,10 +61,10 @@ public class DeckManager : MonoBehaviour
         };
         talentCards = new List<string> {
             "Juggling", "Climbing", "Dancing", "Martial Arts", "Cooking",
-            "Programming", "Gardening", "Chess", "Gymnastics", "Singing"
+            "Program-ming", "Gardening", "Chess", "Gymnasti-cs", "Singing"
         };
         abilityCards = new List<string> {
-            "Teleportation", "Invisibility", "Healing", "Telekinesis", "Super Speed",
+            "Teleporta-tion", "Invisibility", "Healing", "Telekinesis", "Super Speed",
             "Fire Breath", "Flight", "X-Ray Vision", "Lava Arms", "Animal Control"
         };
         clothesCards = new List<string> {
