@@ -22,9 +22,6 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
     [SerializeField] private CardType cardType;
 
     public GameObject opponentMatchingMove;
-
-    private string baseUri = "http://localhost:3000";
-
     public GameObject DialogueObject;
 
     public void Start()

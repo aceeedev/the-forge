@@ -155,7 +155,8 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
             int otherPoolCardIndex = cardIndex % 2 == 0 ? cardIndex + 1 : cardIndex - 1;
 
             // Find the specific target cards in the player decks at the calculated index
-            CardFetch[] allCards = FindObjectsOfType<CardFetch>();
+            CardFetch[] allCards = FindObjectsByType<CardFetch>(FindObjectsSortMode.None);
+            
             CardFetch targetPlayer1Card = null;
             CardFetch targetPlayer2Card = null;
             CardFetch otherPoolCard = null;
