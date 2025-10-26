@@ -40,7 +40,6 @@ public class ActionSceneFetch : MonoBehaviour
 
     public bool loading = false;
 
-    private string baseUri = "http://localhost:3000";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -103,7 +102,7 @@ public class ActionSceneFetch : MonoBehaviour
 
         bool done = false;
 
-        yield return StartCoroutine(SendGet("generate-move-descriptions", query, (ResponseWrapper response) =>
+        yield return StartCoroutine(MyUtils.SendGet("generate-move-descriptions", query, (ResponseWrapper response) =>
         {
             if (response == null)
             {
@@ -155,7 +154,7 @@ public class ActionSceneFetch : MonoBehaviour
 
         bool done = false;
 
-        yield return StartCoroutine(SendGet("generate-image", query, (byte[] response) =>
+        yield return StartCoroutine(MyUtils.SendGet("generate-image", query, (byte[] response) =>
         {
             if (response == null)
             {
@@ -182,52 +181,5 @@ public class ActionSceneFetch : MonoBehaviour
         }));
 
         yield return new WaitUntil(() => done);
-    }
-
-    private IEnumerator SendGet<T>(string endpoint, string query = null, Action<T> onComplete = null, bool passAsJson = false)
-    {
-        string url = baseUri + "/" + endpoint;
-        if (!string.IsNullOrEmpty(query))
-        {
-            url += "?text=" + UnityWebRequest.EscapeURL(query);
-        }
-
-        using (UnityWebRequest req = UnityWebRequest.Get(url))
-        {
-            req.SetRequestHeader("Content-Type", "application/json");
-            req.downloadHandler = new DownloadHandlerBuffer();
-
-            yield return req.SendWebRequest();
-
-            if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("GET error: " + req.error);
-            }
-            else
-            {
-                Debug.Log("GET response: " + req.downloadHandler.text);
-
-                if (onComplete != null)
-                {
-                    if (passAsJson)
-                    {
-                        T obj = JsonUtility.FromJson<T>(req.downloadHandler.text);
-                        onComplete(obj);
-                    }
-                    else
-                    {
-                        // Ensure T is byte[] or compatible
-                        if (typeof(T) == typeof(byte[]))
-                        {
-                            onComplete((T)(object)req.downloadHandler.data);
-                        }
-                        else
-                        {
-                            Debug.LogError("Cannot pass raw data to type " + typeof(T));
-                        }
-                    }
-                }
-            }
-        }
     }
 }

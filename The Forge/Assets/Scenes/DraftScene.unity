@@ -1329,8 +1329,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Situation
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bb610af801c4f4f40a9296ffd495c9a2, type: 2}
+  m_sharedMaterial: {fileID: -220088223660160651, guid: bb610af801c4f4f40a9296ffd495c9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1482,8 +1482,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: End Draft
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bb610af801c4f4f40a9296ffd495c9a2, type: 2}
+  m_sharedMaterial: {fileID: -220088223660160651, guid: bb610af801c4f4f40a9296ffd495c9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2211,10 +2211,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 743010944}
     m_Modifications:
     - target: {fileID: 2261558938621431309, guid: fccf38df905c22044aa913e88c79a3fe, type: 3}
-      propertyPath: cardIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261558938621431309, guid: fccf38df905c22044aa913e88c79a3fe, type: 3}
       propertyPath: player1CardGameObject
       value: 
       objectReference: {fileID: 900932745}
@@ -2309,35 +2305,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5298825524605142608, guid: fccf38df905c22044aa913e88c79a3fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2079188464}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fccf38df905c22044aa913e88c79a3fe, type: 3}
 --- !u!224 &2079188462 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3373769478893655247, guid: fccf38df905c22044aa913e88c79a3fe, type: 3}
   m_PrefabInstance: {fileID: 2079188461}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2079188463 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5298825524605142608, guid: fccf38df905c22044aa913e88c79a3fe, type: 3}
-  m_PrefabInstance: {fileID: 2079188461}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2079188464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079188463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31621f46843834e2fab69bcd553c2853, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transitionSpeed: 10
-  hoverRotation: 10
 --- !u!1001 &2105417671
 PrefabInstance:
   m_ObjectHideFlags: 0

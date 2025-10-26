@@ -32,60 +32,6 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         DialogueObject = GameObject.FindGameObjectWithTag("Dialogue");
     }
 
-    private IEnumerator SendGet<T>(string endpoint, string query = null, Action<T> onComplete = null, bool passAsJson = false)
-    {
-        string url = baseUri + "/" + endpoint;
-        if (!string.IsNullOrEmpty(query))
-        {
-            url += "?text=" + UnityWebRequest.EscapeURL(query);
-        }
-
-        using (UnityWebRequest req = UnityWebRequest.Get(url))
-        {
-            req.SetRequestHeader("Content-Type", "application/json");
-            req.downloadHandler = new DownloadHandlerBuffer();
-
-            yield return req.SendWebRequest();
-
-            if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("GET error: " + req.error);
-            }
-            else
-            {
-                Debug.Log("GET response: " + req.downloadHandler.text);
-
-                if (onComplete != null)
-                {
-                    if (passAsJson)
-                    {
-                        T obj = JsonUtility.FromJson<T>(req.downloadHandler.text);
-                        onComplete(obj);
-                    }
-                    else
-                    {
-                        // Ensure T is byte[] or compatible
-                        if (typeof(T) == typeof(byte[]))
-                        {
-                            onComplete((T)(object)req.downloadHandler.data);
-                        }
-                        else
-                        {
-                            Debug.LogError("Cannot pass raw data to type " + typeof(T));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    void setActiveChildren(bool value)
-    {
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(value);
-        }
-    }
 
     private IEnumerator ShowWinnerThenNextTurn(string winnerText, Action callback)
     {
@@ -104,7 +50,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
     {
         string query = "Decisvely determine if player_1 or player_2 won this situation based on actions selected and how it progress their story. In 20 words or less, declare the winner and give a final summary that wraps up each player's story.";
 
-        yield return StartCoroutine(SendGet("decide-winner", query, (ResponseWrapper response) =>
+        yield return StartCoroutine(MyUtils.SendGet("decide-winner", query, (ResponseWrapper response) =>
         {
             if (response == null)
             {
@@ -145,11 +91,11 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         string move = GetComponentInChildren<TextMeshProUGUI>().text;
 
         // "remove" this move
-        setActiveChildren(false);
+        MyUtils.SetActiveChildren(gameObject, false);
         GetComponent<Image>().enabled = false;
 
         // "remove" the opponents matching move
-        opponentMatchingMove.GetComponent<MoveSelect>().setActiveChildren(false);
+        MyUtils.SetActiveChildren(opponentMatchingMove.GetComponent<MoveSelect>().gameObject, false);
         opponentMatchingMove.GetComponent<Image>().enabled = false;
 
 
@@ -162,7 +108,8 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         }
         else
         {
-            StartCoroutine(SendGet("prompt-response", $"The player has chosen: \"{move}\". In a short sentence no more than 15 words explain the effectiveness of the action having just been performed. Make it progress the scene for that character and affect future outcomes. Remember, failure or partial failures are allowed especially if the action does not really fit. Do not mention potential risks, but do mention real consequences that happened. Narrations that combo with previous actions made by this player should included, but don't mention any combos unless the player has previously chosen an actions this situation.", (ResponseWrapper response) =>
+            StartCoroutine(MyUtils.SendGet("prompt-response", $"The player has chosen: {move}. In a short sentence no more than 15 words explain its actual effectiveness having just been done, make it progress the scene for that character and affect future decisions, failure or partial failures are allowed, be realistic and leave room for creative approaches. Combos with previous actions should be encouraged and rewarded, but don't mention it unless the player has previously chosen them this situation.",
+            (ResponseWrapper response) =>
             {
                 if (response == null)
                 {
@@ -171,9 +118,9 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
                 }
 
                 string actionDialogue = response.response;
-                
+
                 Debug.Log("Action Dialogue received: " + actionDialogue);
-                
+
                 // Update the DialogueObject text immediately when response arrives
                 if (DialogueObject != null)
                 {
