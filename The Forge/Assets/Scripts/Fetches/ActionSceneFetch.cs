@@ -1,11 +1,16 @@
 using System;
 using System.Collections;
-using System.Runtime.CompilerServices;
 using System.Text;
-using UnityEditor.Animations;
-using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.Networking;
+using TMPro;
+
+
+[System.Serializable]
+public class ResponseWrapper
+{
+    public string response;
+}
 
 [System.Serializable]
 public class Moves
@@ -14,6 +19,8 @@ public class Moves
     public string move_2;
     public string move_3;
     public string move_4;
+
+    public string[] ToArray() => new[] { move_1, move_2, move_3, move_4 };
 }
 
 
@@ -96,19 +103,28 @@ public class ActionSceneFetch : MonoBehaviour
         }
         };
 
-        StartCoroutine(SendPost("generate-move-descriptions", JsonUtility.ToJson(container), (response) =>
+        StartCoroutine(SendPost<ResponseWrapper>("generate-move-descriptions", JsonUtility.ToJson(container), (ResponseWrapper response) =>
         {
-            Moves moves = response as Moves;
-            
-            foreach (Transform child in player1ActionMenuObject)
+            if (response == null)
             {
-                
+                Debug.LogError("Failed to parse moves");
+                return;
+            }
+
+            string[] moves = JsonUtility.FromJson<Moves>(response.response).ToArray();
+
+            int index = 0;
+            foreach (Transform child in (playerNum == 1 ? player1ActionMenuObject : player2ActionMenuObject).transform)
+            {
+                child.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = moves[index];
+
+                index++;
             }
         }));
     }
 
 
-    private IEnumerator SendPost(string endpoint, string payload, Action<dynamic> onComplete)
+    private IEnumerator SendPost<T>(string endpoint, string payload, Action<T> onComplete)
     {
         byte[] bodyRaw = Encoding.UTF8.GetBytes(payload);
         using (UnityWebRequest req = new UnityWebRequest(baseUri + "/" + endpoint, "POST"))
@@ -125,7 +141,9 @@ public class ActionSceneFetch : MonoBehaviour
             }
             else
             {
-                onComplete?.Invoke(JsonUtility.FromJson<Moves>(req.downloadHandler.text));
+                Debug.Log(req.downloadHandler.text);
+
+                onComplete?.Invoke(JsonUtility.FromJson<T>(req.downloadHandler.text));
             }
         }
     }
