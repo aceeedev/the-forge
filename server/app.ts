@@ -5,14 +5,23 @@ const app = express()
 
 app.use(express.json())
 
-app.post('/generate-move-descriptions', async (req, res) => {
-    const messages = req.body.messages as Message[]
+app.get('/prompt-response', async (req, res) => {
+    const text = req.query.text as string
+    const messages = [{ role: "user", content: text }] as Message[]
+    const response = await openAiService.prompt(messages)
+    res.send({ response })
+})
+
+app.get('/generate-move-descriptions', async (req, res) => {
+    const text = req.query.text as string
+    const messages = [{ role: "user", content: text }] as Message[]
     const response = await openAiService.generate_moves(messages)
     res.send({ response })
 })
 
-app.post('/decide-winner', async (req, res) => {
-    const messages = req.body.messages as Message[]
+app.get('/decide-winner', async (req, res) => {
+    const text = req.query.text as string
+    const messages = [{ role: "user", content: text }] as Message[]
     const response = await openAiService.decide_winner(messages)
     res.send({ response })
 })
