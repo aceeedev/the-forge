@@ -147,6 +147,8 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
             DeckManager.inst.player2Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[cardIndex];
             DeckManager.inst.player1Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[otherPoolCardIndex];
         }
+        DeckManager.inst.poolCards[cardIndex] = "";
+        DeckManager.inst.poolCards[otherPoolCardIndex] = "";
 
         yield return new WaitForSeconds(0.05f);
         GameManager.inst.cardsMoving = false;
