@@ -145,7 +145,33 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
                 Debug.LogError("DialogueObject is null!");
             }
 
-             if ((GameManager.inst.currentActionPhase[0] == GameManager.ActionPhase.Middle && GameManager.inst.currentActionPhase[1] == GameManager.ActionPhase.End) ||
+            if (GameManager.inst.currentActionPhase[0] == GameManager.ActionPhase.Middle && GameManager.inst.currentActionPhase[1] == GameManager.ActionPhase.Middle)
+            {
+                bool flag = false;
+                if (GameManager.inst.numActionPhases < GameManager.inst.maxNumActionPhases)
+                {
+                    flag = true;
+                    
+                    // reset until ready to move onto next draft or final scene
+                    GameManager.inst.currentActionPhase[0] = GameManager.ActionPhase.Beginning;
+                    GameManager.inst.currentActionPhase[1] = GameManager.ActionPhase.Beginning;
+
+                    MoveSelect[] moveSelects = FindObjectsByType<MoveSelect>(FindObjectsSortMode.None);
+                    foreach (MoveSelect moveSelect in moveSelects)
+                    {
+                        Debug.Log(moveSelect.name);
+
+                        MyUtils.SetActiveChildren(moveSelect.gameObject, true);
+                        moveSelect.gameObject.GetComponent<Image>().enabled = true;
+                    }
+                    ;
+
+                    GameManager.inst.numActionPhases++;
+                }
+
+                GameManager.inst.NextTurn(flag);
+            }
+            else if ((GameManager.inst.currentActionPhase[0] == GameManager.ActionPhase.Middle && GameManager.inst.currentActionPhase[1] == GameManager.ActionPhase.End) ||
             (GameManager.inst.currentActionPhase[0] == GameManager.ActionPhase.End && GameManager.inst.currentActionPhase[1] == GameManager.ActionPhase.Middle))
             {
                 // if the game is about to end

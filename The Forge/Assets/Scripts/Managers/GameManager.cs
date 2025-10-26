@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public class AwardsResponseWrapper
 {
@@ -24,6 +25,10 @@ public class GameManager : MonoBehaviour
 
     public enum ActionPhase { Beginning, Middle, End }
     public ActionPhase[] currentActionPhase;
+
+    public int numActionPhases = 1;
+
+    public int maxNumActionPhases = 2;
 
     public bool cardsMoving = false;
 
@@ -73,7 +78,7 @@ public class GameManager : MonoBehaviour
         currentPhase = CurrentPhase.Draft;
         currentRound = 1;
 
-        currentActionPhase = new ActionPhase[] { ActionPhase.Beginning, ActionPhase.Beginning};
+        currentActionPhase = new ActionPhase[] { ActionPhase.Beginning, ActionPhase.Beginning };
 
         // select situation and pool cards
         DeckManager.inst.SelectPoolCards();
@@ -82,7 +87,7 @@ public class GameManager : MonoBehaviour
         DeckManager.inst.player2Deck = new PlayerDeck();
     }
 
-    public void NextTurn()
+    public void NextTurn(bool actionRepeatFlag = false)
     {
         /// will switch the phase and scene and round++ if True
         bool moveToNextPhase = false;
@@ -187,6 +192,8 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(DeckManager.inst.SelectSituationCard());
                 currentRound += 1;
 
+                numActionPhases = 1;
+
                 SceneManager.LoadScene("DraftScene");
             }
             currentTurn = currentRound % 2 == 0 ? CurrentTurn.Player1 : CurrentTurn.Player2;
@@ -199,6 +206,12 @@ public class GameManager : MonoBehaviour
             else
             {
                 currentTurn = CurrentTurn.Player1;
+            }
+
+            if (actionRepeatFlag)
+            {
+                currentActionPhase[0] = ActionPhase.Beginning;
+                currentActionPhase[1] = ActionPhase.Beginning;
             }
         }
     }
