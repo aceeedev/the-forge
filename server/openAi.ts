@@ -79,7 +79,7 @@ class OpenAiService {
 
     async decide_winner(messages: Message[]) {
         const response = await this.client.responses.parse({
-            model: "gpt-5",
+            model: "gpt-4.1-mini",
             input: messages as any,
             text: {
                 format: zodTextFormat(WhoWon, "event"),

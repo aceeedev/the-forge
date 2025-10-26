@@ -125,6 +125,11 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if ((GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1 && cardType == CardType.Player2) || (GameManager.inst.currentTurn == GameManager.CurrentTurn.Player2 && cardType == CardType.Player1))
+        {
+            return;
+        }
+
         // "remove" this move
         setActiveChildren(false);
         GetComponent<Image>().enabled = false;
