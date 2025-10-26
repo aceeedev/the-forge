@@ -61,7 +61,7 @@ public class DeckManager : MonoBehaviour
             "Cape", "Magnet Boots", "Halo", "Suit of Armor", "Helmet"
         };
         poolCards = new List<string>();
-        StartCoroutine(SendGet<object>("new-conversation", null, (response) => {
+        StartCoroutine(MyUtils.SendGet<object>("new-conversation", null, (response) => {
             Debug.Log("New conversation initiated: " + response);
         }));
     }

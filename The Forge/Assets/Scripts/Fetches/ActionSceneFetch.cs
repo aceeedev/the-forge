@@ -79,15 +79,26 @@ public class ActionSceneFetch : MonoBehaviour
         // setup the situation
         // yield return StartCoroutine(SendGet<string>("prompt-response", $"The situation is: {DeckManager.inst.situation}"));
 
-        // generate moves
-        yield return GenerateMoveDescriptions(1);
-        yield return GenerateMoveDescriptions(2);
+        // Start all tasks in parallel
+        Coroutine[] tasks = new Coroutine[]
+        {
+            StartCoroutine(RunGenerateMoves()),
+            StartCoroutine(GenerateCharacterImage(1)),
+            StartCoroutine(GenerateCharacterImage(2))
+        };
 
-        // generate images
-        yield return GenerateCharacterImage(1);
-        yield return GenerateCharacterImage(2);
+        // Wait for all tasks to complete
+        foreach (var task in tasks)
+        {
+            yield return task;
+        }
 
         loading = false;
+    }
+
+    private IEnumerator RunGenerateMoves() {
+        yield return StartCoroutine(GenerateMoveDescriptions(1));
+        yield return StartCoroutine(GenerateMoveDescriptions(2));
     }
 
     private IEnumerator GenerateMoveDescriptions(int playerNum)

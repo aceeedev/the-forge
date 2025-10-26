@@ -166,26 +166,29 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     public void Update()
     {
-        if (GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1 && cardType == CardType.Player2)
+        if (GameManager.inst == null)
         {
-            GetComponent<HoverEffect>().enabled = false;
-
             return;
         }
-        else
+
+        HoverEffect hoverEffect = GetComponent<HoverEffect>();
+        if (hoverEffect == null)
         {
-            GetComponent<HoverEffect>().enabled = true;
+            return;
+        }
+
+        if (GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1 && cardType == CardType.Player2)
+        {
+            hoverEffect.enabled = false;
+            return;
         }
 
         if (GameManager.inst.currentTurn == GameManager.CurrentTurn.Player2 && cardType == CardType.Player1)
         {
-            GetComponent<HoverEffect>().enabled = false;
-
+            hoverEffect.enabled = false;
             return;
         }
-        else
-        {
-            GetComponent<HoverEffect>().enabled = true;
-        }
+
+        hoverEffect.enabled = true;
     }
 }
