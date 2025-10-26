@@ -61,9 +61,6 @@ public class DeckManager : MonoBehaviour
             "Cape", "Magnet Boots", "Halo", "Suit of Armor", "Helmet"
         };
         poolCards = new List<string>();
-        StartCoroutine(MyUtils.SendGet<int>("new-conversation", null, (response) => {
-            Debug.Log("New conversation initiated: " + response);
-        }));
     }
 
     public static DeckManager inst;
@@ -84,6 +81,10 @@ public class DeckManager : MonoBehaviour
         if (inst == null)
         {
             inst = this;
+
+            StartCoroutine(MyUtils.SendGet<int>("new-conversation", null, (response) => {
+            Debug.Log("New conversation initiated: " + response);
+        }));
         }
         else if (inst != this)
         {
