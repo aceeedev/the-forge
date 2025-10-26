@@ -61,7 +61,7 @@ public class DeckManager : MonoBehaviour
             "Cape", "Magnet Boots", "Halo", "Suit of Armor", "Helmet"
         };
         poolCards = new List<string>();
-        StartCoroutine(MyUtils.SendGet<object>("new-conversation", null, (response) => {
+        StartCoroutine(MyUtils.SendGet<int>("new-conversation", null, (response) => {
             Debug.Log("New conversation initiated: " + response);
         }));
     }
@@ -104,7 +104,7 @@ public class DeckManager : MonoBehaviour
         situationCards.RemoveAt(randomIndex);
 
         situationPromptLoading = true;
-        yield return StartCoroutine(MyUtils.SendGet<int>("prompt-response", $"The situation is: {DeckManager.inst.situation}",
+        yield return StartCoroutine(MyUtils.SendGet("prompt-response", $"The situation is: {DeckManager.inst.situation}",
         (int response) => { situationPromptLoading = false; }));
     }
 
