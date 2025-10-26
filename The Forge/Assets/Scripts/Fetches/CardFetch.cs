@@ -83,7 +83,7 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
         Vector3 startPosition = rectTransform.position;
         Vector3 targetWorldPosition = targetRectTransform.position;
         
-        float duration = 0.5f;
+        float duration = 0.3f;
         float elapsed = 0f;
         
         while (elapsed < duration)
@@ -133,7 +133,8 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
         }
 
         // Wait for animations to complete (0.5 seconds default duration)
-        yield return new WaitForSeconds(0.5f);
+        GameManager.inst.cardsMoving = true;
+        yield return new WaitForSeconds(0.3f);
 
         // After animations complete, update the deck data
         if (GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1)
@@ -147,7 +148,8 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
             DeckManager.inst.player1Deck.cards[playerDeckIndex] = DeckManager.inst.poolCards[otherPoolCardIndex];
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
+        GameManager.inst.cardsMoving = false;
         GameManager.inst.NextTurn();
     }
 

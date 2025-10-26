@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public enum ActionPhase { Beginning, Middle, End }
     public ActionPhase currentActionPhase = ActionPhase.Beginning;
 
+    public bool cardsMoving = false;
+
     void Awake()
     {
         // live laugh love singleton pattern

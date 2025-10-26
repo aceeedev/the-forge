@@ -154,22 +154,10 @@ MonoBehaviour:
   - Assemble IKEA furniture without directions
   - Teach a classroom Physics
   - Fix a lightbulb
-  itemCards:
-  - Sword
-  - Gun
-  - Shield
-  talentCards:
-  - Smart
-  - Strong
-  - Fast
-  abilityCards:
-  - Teleportation
-  - Invisibility
-  - Healing
-  clothesCards:
-  - Shirt
-  - Pants
-  - Hat
+  itemCards: []
+  talentCards: []
+  abilityCards: []
+  clothesCards: []
   situation: 
   poolCards: []
   lastTurn: 0
@@ -208,6 +196,7 @@ MonoBehaviour:
   currentPhase: 0
   currentRound: 1
   currentActionPhase: 0
+  cardsMoving: 0
 --- !u!4 &156801719
 Transform:
   m_ObjectHideFlags: 0
