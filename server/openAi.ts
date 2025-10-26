@@ -11,10 +11,10 @@ export interface Message {
 }
 
 const MoveDescriptions = z.object({
-    move_1: z.string().describe("A brief less than 8 word setnence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
-    move_2: z.string().describe("A brief less than 8 word setnence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
-    move_3: z.string().describe("A brief less than 8 word setnence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
-    move_4: z.string().describe("A brief less than 8 word setnence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
+    move_1: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
+    move_2: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
+    move_3: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
+    move_4: z.string().describe("A brief less than 8 word sentence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic and clearly signifying how the character trait is used."),
 }).strict();
 
 const WhoWon = z.object({
