@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using TMPro;
+
 
 
 [System.Serializable]
@@ -77,6 +79,18 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         }
     }
 
+    private IEnumerator ShowWinnerThenNextTurn(string winnerText, Action callback)
+    {
+        ActionSceneFetch.winnerObject.GetComponent<TextMeshProUGUI>().text = winnerText;
+
+        yield return new WaitForSeconds(1f);
+
+        if (callback != null)
+        {
+            callback();
+        }
+    }
+
     public IEnumerator CheckWinner(Action callback)
     {
         string query = "Decide which player one based off of the story!";
@@ -95,14 +109,14 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
             {
                 if (winner == "player_1")
                 {
-                    Debug.Log("Player 1 won!");
+                    winner = "Player 1 won!";
                 }
                 else
                 {
-                    Debug.Log("Player 2 won!");
+                    winner = "Player 2 won!";
                 }
-                
-                callback();
+
+                ShowWinnerThenNextTurn(winner, callback);
             }
 
         }, true));
