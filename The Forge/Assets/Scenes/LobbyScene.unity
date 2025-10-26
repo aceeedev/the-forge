@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 100657245}
   - component: {fileID: 100657244}
   m_Layer: 0
-  m_Name: Sound Effect Holder
+  m_Name: Click Sound Effect Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,9 +637,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: d6e443c17fc483e47b69f486a844c74a, type: 3}
+  m_Resource: {fileID: 8300000, guid: 54baceb2c646d9342b42e973a036670a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.15
   m_Pitch: 0.85
   Loop: 1
   Mute: 0
