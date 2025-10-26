@@ -24,8 +24,8 @@ public class EndDraftPhaseButton : MonoBehaviour
     
     public void OnPressed()
     {
-        AudioManager.PlayClick();
-        
+        AudioManager.inst.PlayClick();
+
         GameManager.inst.NextTurn();
         GameManager.inst.lastTurn = true;
     }

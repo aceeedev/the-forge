@@ -151,7 +151,7 @@ public class CardFetch : MonoBehaviour, IPointerDownHandler
     {
         if (cardType == CardType.Pool)
         {
-            AudioManager.PlayClick();
+            AudioManager.inst.PlayClick();
 
             int playerDeckIndex = (int)Math.Floor((double)cardIndex / 2);
             int otherPoolCardIndex = cardIndex % 2 == 0 ? cardIndex + 1 : cardIndex - 1;

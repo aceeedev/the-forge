@@ -87,7 +87,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
             return;
         }
 
-        AudioManager.PlayClick();
+        AudioManager.inst.PlayClick();
 
         string move = GetComponentInChildren<TextMeshProUGUI>().text;
 
