@@ -5,6 +5,12 @@ const app = express()
 
 app.use(express.json())
 
+
+app.get('/new-conversation', async (req, res) => {
+    await openAiService.new_conversation()
+    res.sendStatus(200)
+})
+
 app.get('/prompt-response', async (req, res) => {
     const text = req.query.text as string
     const messages = [{ role: "user", content: text }] as Message[]

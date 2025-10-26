@@ -35,6 +35,7 @@ public class DeckManager : MonoBehaviour
 
     public void Start()
     {
+        Debug.Log("DeckManager started");
         situationCards = new List<string> {
             "Assemble IKEA furniture without directions",
             "Teach a classroom Physics",
@@ -59,6 +60,9 @@ public class DeckManager : MonoBehaviour
             "Cape", "Magnet Boots", "Halo", "Suit of Armor", "Helmet"
         };
         poolCards = new List<string>();
+        StartCoroutine(SendGet<object>("new-conversation", null, (response) => {
+            Debug.Log("New conversation initiated: " + response);
+        }));
     }
 
     public static DeckManager inst;

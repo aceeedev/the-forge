@@ -43,10 +43,17 @@ class OpenAiService {
                     Be realistic about the practicality and consequences of the players' choices, but still allow for creativity and imagination.
                     Ensure the story is told clearly, coherently, and is easy for players to follow.
                     Diversify the actions players can take and focus on diversifying personalities and tactics to choose from such as defense, stealth, efficiency, and chaos.
+                    Further details will be shared, no need to ask for more.
                 `
             });
             console.log("Conversation initiated!!!");
         }, 0);
+    }
+
+    async new_conversation() {
+        this.conversation = null;
+        this.conversation = await this.client.conversations.create();
+        console.log("New conversation initiated!!!");
     }
     
     public async prompt(messages: Message[]) {
