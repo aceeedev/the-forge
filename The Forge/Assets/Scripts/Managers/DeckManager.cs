@@ -47,7 +47,13 @@ public class DeckManager : MonoBehaviour
             "Teach a classroom Physics",
             "Fix a lightbulb",
             "Parallel park a car on a hill",
-            "Win a hot dog eating contest"
+            "Win a hot dog eating contest",
+            "Walk five dogs at once",
+            "Compete in a dance battle",
+            "Survive a zombie apocalypse",
+            "Open a pickle jar",
+            "Accidentally joining the wrong Zoom meeting",
+            ""
         };
         itemCards = new List<string> {
             "Nunchucks", "Boomerang", "Balloon", "Frying Pan", "Water Gun",
