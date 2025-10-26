@@ -31,7 +31,6 @@ public class ActionSceneFetch : MonoBehaviour
 {
     public GameObject LoadingObject;
 
-    public GameObject DialogueObject;
 
     public GameObject player1ActionMenuObject;
     public GameObject player2ActionMenuObject;
