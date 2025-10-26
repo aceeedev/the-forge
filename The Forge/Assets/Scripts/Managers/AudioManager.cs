@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource sfxSource;   // sound effects
+    public static AudioSource sfxSource;   // sound effects
 
 
-    public void PlayClick()
+    public static void PlayClick()
     {
         sfxSource.Play();
     }
