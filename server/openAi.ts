@@ -41,7 +41,7 @@ class OpenAiService {
                     Your task is to describe the unfolding story based on the players' actions. When receiving the situation, you can expand on it slightly to add additional details.
                     Be realistic about the practicality and consequences of the players' choices, but still allow for creativity and imagination.
                     Ensure the story is told clearly, coherently, and is easy for players to follow.
-                    Diversify the actions players can take and focus on diversifying personailities and tactics to choose fromsuch as defense, stealth, efficiency, and chaos.
+                    Diversify the actions players can take and focus on diversifying personalities and tactics to choose from such as defense, stealth, efficiency, and chaos.
                 `
             });
             console.log("Conversation initiated!!!");
