@@ -77,6 +77,10 @@ public class ActionSceneFetch : MonoBehaviour
     {
         loading = true;
 
+        while (DeckManager.inst.situationPromptLoading)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
         // setup the situation
         // yield return StartCoroutine(SendGet<string>("prompt-response", $"The situation is: {DeckManager.inst.situation}"));
 

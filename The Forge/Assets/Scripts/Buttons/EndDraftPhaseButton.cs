@@ -12,7 +12,7 @@ public class EndDraftPhaseButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool hideOrShow = GameManager.inst.currentPhase == GameManager.CurrentPhase.Draft && GameManager.inst.currentRound >= 2;
+        bool hideOrShow = GameManager.inst.currentPhase == GameManager.CurrentPhase.Draft && GameManager.inst.currentRound >= 2 && GameManager.inst.lastTurn == false;
 
         GetComponent<Image>().enabled = hideOrShow;
 
@@ -24,6 +24,7 @@ public class EndDraftPhaseButton : MonoBehaviour
     
     public void OnPressed()
     {
-        DeckManager.inst.lastTurn = true;
+        GameManager.inst.NextTurn();
+        GameManager.inst.lastTurn = true;
     }
 }

@@ -70,10 +70,11 @@ public class DeckManager : MonoBehaviour
     public PlayerDeck player1Deck;
     public PlayerDeck player2Deck;
 
+    public bool situationPromptLoading = false;
+
     /// <summary>
     ///  for checking if its the last turn on rounds of drafts >=2
     /// </summary>
-    public bool lastTurn = false;
     private string baseUri = "http://localhost:3000";
 
     void Awake()
@@ -106,6 +107,7 @@ public class DeckManager : MonoBehaviour
 
     private IEnumerator SendGet<T>(string endpoint, string query = null, Action<T> onComplete = null, bool passAsJson = false)
     {
+        situationPromptLoading = true;
         string url = baseUri + "/" + endpoint;
         if (!string.IsNullOrEmpty(query))
         {
@@ -149,6 +151,7 @@ public class DeckManager : MonoBehaviour
                 }
             }
         }
+        situationPromptLoading = false;
     }
 
     public void SelectPoolCards()

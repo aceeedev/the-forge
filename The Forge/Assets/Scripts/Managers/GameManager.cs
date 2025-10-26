@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     public bool cardsMoving = false;
 
+    public bool lastTurn = false;
+
     void Awake()
     {
         // live laugh love singleton pattern
@@ -78,15 +80,16 @@ public class GameManager : MonoBehaviour
         // if draft phase
         if (currentPhase == CurrentPhase.Draft)
         {
-            if (DeckManager.inst.lastTurn)
+            if (GameManager.inst.lastTurn)
             {
                 moveToNextPhase = true;
 
-                DeckManager.inst.lastTurn = false;
+                GameManager.inst.lastTurn = false;
             }
 
-            // check if all decks are full and ready to go to the next phase
-            else if (DeckManager.inst.player1Deck.IsDeckFull() && DeckManager.inst.player2Deck.IsDeckFull())
+            // check if pool is empty 
+            // TO DO: "end turn" is is clicked
+            else if (DeckManager.inst.poolCards.All(card => card == ""))
             {
                 moveToNextPhase = true;
             }
@@ -148,6 +151,8 @@ public class GameManager : MonoBehaviour
             if (currentPhase == CurrentPhase.Draft)
             {
                 currentPhase = CurrentPhase.Action;
+                currentActionPhase[0] = ActionPhase.Beginning;
+                currentActionPhase[1] = ActionPhase.Beginning;
                 currentRound += 1;
 
                 SceneManager.LoadScene("ActionScene");
@@ -155,6 +160,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 currentPhase = CurrentPhase.Draft;
+                DeckManager.inst.SelectPoolCards();
+                StartCoroutine(DeckManager.inst.SelectSituationCard());
                 currentRound += 1;
 
                 SceneManager.LoadScene("DraftScene");
