@@ -30,12 +30,13 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
     }
 
 
-    private IEnumerator ShowWinnerThenNextTurn(string winnerText, Action callback)
+    private IEnumerator ShowWinnerThenNextTurn(string winnerText, string winnerExplanation, Action callback)
     {
         Debug.Log(GameObject.FindGameObjectWithTag("WinnerText"));
         GameObject.FindGameObjectWithTag("WinnerText").GetComponent<TextMeshProUGUI>().text = winnerText;
+        DialogueObject.GetComponent<TextMeshProUGUI>().text = winnerExplanation;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
 
         if (callback != null)
         {
@@ -45,7 +46,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     public IEnumerator CheckWinner(Action callback)
     {
-        string query = "Decisvely determine if player_1 or player_2 won this situation based on actions selected and how it progress their story. In 20 words or less, declare the winner and give a final summary that wraps up each player's story.";
+        string query = " . Then, decisvely determine if player_1 or player_2 won this situation based on actions selected and how it progress their story. In 20 words or less, declare the winner and give a final summary that wraps up each player's story.";
 
         yield return StartCoroutine(MyUtils.SendGet("decide-winner", query, (ResponseWrapper response) =>
         {
@@ -58,8 +59,9 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
             WinnerWrapper winnerWrapper = JsonUtility.FromJson<WinnerWrapper>(response.response);
 
             string winner = winnerWrapper.winner;
+            string winnerExplanation = winnerWrapper.explanation;
 
-            Debug.Log("Winning Explanation: " + winnerWrapper.explanation);
+            Debug.Log("Winning Explanation: " + winnerExplanation);
 
             if (callback != null)
             {
@@ -72,7 +74,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
                     winner = "Player 2 won!";
                 }
 
-                StartCoroutine(ShowWinnerThenNextTurn(winner, callback));
+                StartCoroutine(ShowWinnerThenNextTurn(winner, winnerExplanation, callback));
             }
 
         }, true));
@@ -105,7 +107,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         }
         else
         {
-            StartCoroutine(MyUtils.SendGet("prompt-response", $"The player has chosen: {move}. In a short sentence no more than 15 words explain its actual effectiveness having just been done, make it progress the scene for that character and affect future decisions, failure or partial failures are allowed, be realistic and leave room for creative approaches. Combos with previous actions should be encouraged and rewarded, but don't mention it unless the player has previously chosen them this situation.",
+            StartCoroutine(MyUtils.SendGet("prompt-response", $"The player has chosen to do the following move: {move}. In a short sentence no more than 12 words explain its actual effectiveness having just been performed. Tell the story of how it progressed the scene and always include build-off of previous actions taken by them. Determine the action's effectiveness, complete successes are possible, but failure or partial failures are also allowed and often realistic.",
             (ResponseWrapper response) =>
             {
                 if (response == null)
