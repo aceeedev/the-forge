@@ -1,8 +1,21 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Text;
+using UnityEditor.Animations;
+using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.Networking;
+
+[System.Serializable]
+public class Moves
+{
+    public string move_1;
+    public string move_2;
+    public string move_3;
+    public string move_4;
+}
+
 
 public class ActionSceneFetch : MonoBehaviour
 {
@@ -47,9 +60,22 @@ public class ActionSceneFetch : MonoBehaviour
     {
         loading = true;
 
-        // Build object graph and convert to JSON
-        var container = new MessageContainer { messages = new[] {
-            new Message { 
+        GenerateMoveDescriptions(1);
+        GenerateMoveDescriptions(2);
+
+        yield return
+
+        loading = false;
+    }
+
+    private void GenerateMoveDescriptions(int playerNum)
+    {
+        string cardsToString = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToString() : DeckManager.inst.player2Deck.cardsToString();
+
+        var container = new MessageContainer
+        {
+            messages = new[] {
+            new Message {
                 role = "system",
                 content =  "You are the narrator for an epic battle game called 'The Forge'. " +
                             "Players create characters by combining attribute cards, and you determine " +
@@ -57,29 +83,32 @@ public class ActionSceneFetch : MonoBehaviour
                             "creative, engaging, and consider how different attributes would interact in " +
                             "the situation. Focus on creating dramatic moments and unexpected twists based on " +
                             "the characters' unique combinations of attributes. Keep responses concise " +
-                            "but vivid, around 1 sentence per move description."
+                            "but vivid, around 7 words per move description."
             },
-            new Message { 
+            new Message {
                 role = "user",
                 content =
-                        "Player 1: \n" +
-                        "Player 2: A fighter with [Attributes: Defensive, Stone-skinned, Giant]\n" +
-                        "Situation: Ancient Arena\n" +
-                        "Phase: Beginning"
+                        $"The player has has: {cardsToString}\n" +
+                        "------\n" +
+                        $"Situation: {DeckManager.inst.situation}\n" +
+                        $"Phase: {GameManager.inst.currentActionPhase.ToString()}"
             },
-        } };
+        }
+        };
 
-        yield return StartCoroutine(SendPost("prompt-response", JsonUtility.ToJson(container), (response) =>
+        StartCoroutine(SendPost("generate-move-descriptions", JsonUtility.ToJson(container), (response) =>
         {
-            Debug.Log("POST response (callback): " + response);
-            // handle response here
+            Moves moves = response as Moves;
+            
+            foreach (Transform child in player1ActionMenuObject)
+            {
+                
+            }
         }));
-
-        loading = false;
     }
 
 
-    public IEnumerator SendPost(string endpoint, string payload, Action<string> onComplete)
+    private IEnumerator SendPost(string endpoint, string payload, Action<dynamic> onComplete)
     {
         byte[] bodyRaw = Encoding.UTF8.GetBytes(payload);
         using (UnityWebRequest req = new UnityWebRequest(baseUri + "/" + endpoint, "POST"))
@@ -90,17 +119,14 @@ public class ActionSceneFetch : MonoBehaviour
 
             yield return req.SendWebRequest();
 
-            string result = null;
             if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("POST error: " + req.error);
             }
             else
             {
-                result = req.downloadHandler.text;
+                onComplete?.Invoke(JsonUtility.FromJson<Moves>(req.downloadHandler.text));
             }
-
-            onComplete?.Invoke(result);
         }
     }
 }

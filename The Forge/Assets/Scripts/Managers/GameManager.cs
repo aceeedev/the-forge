@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
 
     public int currentRound = 1;
 
-    public string situation;
+    public enum ActionPhase { Beginning, Middle, End }
+    public ActionPhase currentActionPhase = ActionPhase.Beginning;
 
     void Awake()
     {
@@ -58,6 +59,8 @@ public class GameManager : MonoBehaviour
         currentPhase = CurrentPhase.Draft;
         currentRound = 1;
 
+        currentActionPhase = ActionPhase.Beginning;
+
         // select situation and pool cards
         DeckManager.inst.SelectPoolCards();
         DeckManager.inst.SelectSituationCard();
@@ -99,7 +102,24 @@ public class GameManager : MonoBehaviour
         // if action phase
         else
         {
+            switch (currentActionPhase)
+            {
+                case ActionPhase.Beginning:
 
+                    currentActionPhase = ActionPhase.Middle;
+
+                    break;
+                case ActionPhase.Middle:
+
+                    currentActionPhase = ActionPhase.End;
+
+                    break;
+                case ActionPhase.End:
+
+                    moveToNextPhase = true;
+
+                    break;
+            }
         }
 
         if (moveToNextPhase)

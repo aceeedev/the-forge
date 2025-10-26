@@ -48,7 +48,7 @@ class OpenAiService {
             },
         });
 
-        return response.output_parsed;
+        return response.output_text;
     }
 
     async decide_winner(messages: Message[]) {
@@ -60,7 +60,7 @@ class OpenAiService {
             },
         });
 
-        return response.output_parsed;
+        return response.output_text;
     }
 }
 
