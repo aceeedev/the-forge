@@ -111,7 +111,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
         SetDialogueDisplay(false);
         string playerName = GameManager.inst.currentTurn == GameManager.CurrentTurn.Player1 ? "Player 1" : "Player 2";
-        StartCoroutine(MyUtils.SendGet("prompt-response", $"{playerName} has chosen to do the following move: {move}. Use proper english but being concise, in a sentence no more than 12 words always explain how the action progressed the scene and relate it to previous actions taken by them, determining the action's direct result without hypotheticals which can range from complete successes to failure or partial failures as realistic options.",
+        StartCoroutine(MyUtils.SendGet("prompt-response", $"{playerName} has chosen to do the following move: {move}. Using proper English in a sentence of no more than 14 words, always explain how the action progressed the scene and reference any of the previous actions taken by the character, determining the action's direct result without hypotheticals which can range from successes, failure, or partial failures as realistic options. Do not be afraid to give consequences for a player's actions.",
         (ResponseWrapper response) =>
         {
             if (response == null)

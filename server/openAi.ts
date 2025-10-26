@@ -12,14 +12,14 @@ export interface Message {
 
 const MoveDescriptions = z.object({
     move_1: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the item they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
-    move_2: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how the character it is used."),
+    move_2: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the talent they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
     move_3: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the clothes they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
     move_4: z.string().describe("A creative and less than 8 word sentence description for the player's potential action and effect using the ability they have in a way that clearly progress the story, aligning with a particular tactic (e.g. stealth, efficiency, heroic, evil, or chaos given the situation needs), and clearly signifying how it is used."),
 }).strict();
 
 const WhoWon = z.object({
     winner: z.enum(["player_1", "player_2"]).describe("The player who won the match"),
-    explanation: z.string().describe("A very detailed explanation of why the winner won this stage of the game.")
+    explanation: z.string().describe("A detailed explanation of why the winner won this stage of the game.")
 }).strict();
 
 const FinalWinner = z.object({
@@ -48,11 +48,11 @@ class OpenAiService {
             input: `
                 You are the Game Master, narrating a story where players compete to overcome a situation independently.
                 The situation and player details (including their items, talents, clothing, and abilities) will be provided later.
-                Your role is to describe the unfolding story as players choose 1 of 4 actions you proposein response to the situation.
-                Be realistic about the practicality and consequences of each player's actions, be sure to punish actions that realistically fail, but look for creativity and unexpected problem-solving.
+                Your role is to describe the unfolding story as players choose 1 of 4 actions you propose to them.
+                Be realistic about the practicality of some actions and do not be afraid to give consequences for a player's actions.
+                Punish actions that realistically fail, but look for creativity and unexpected problem-solving.
                 Actions for the players should be diverse and reflect a variety of personalities, motivations, and strategies—such as stealth, efficiency, or chaos.
-                Be sure to remember players' actions as you will decide who the winner is based on their storylines.
-                Do not ask for additional details; all necessary information will be provided when needed.
+                Be sure to remember players' actions throughout the game as you will decide who the winner is based on their storylines.
             `
         });
         console.log("New conversation initiated!!!");
