@@ -179,7 +179,6 @@ public class ActionSceneFetch : MonoBehaviour
         yield return new WaitUntil(() => done);
     }
 
-
     private IEnumerator SendGet<T>(string endpoint, string query = null, Action<T> onComplete = null, bool passAsJson = false)
     {
         string url = baseUri + "/" + endpoint;
