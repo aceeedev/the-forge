@@ -213,7 +213,7 @@ public class ActionSceneFetch : MonoBehaviour
         string cardsToPrompt = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToPrompt() : DeckManager.inst.player2Deck.cardsToPrompt();
         string directionToFace = playerNum == 1 ? "right" : "left";
 
-        string query = $"A colorful and expressive drawing of a character with bold features that is striking an action pose facing {directionToFace} realistically using their {cardsToPrompt}. The character is captured against a pure white background with even lighting and no other text, props, characters, and scenery.";
+        string query = $"A colorful and expressive drawing of a character with bold features that is striking an action pose facing to the {directionToFace} realistically using their {cardsToPrompt}. The character is captured against a pure white background with even lighting and no other text, props, characters, and scenery.";
 
         bool done = false;
 
