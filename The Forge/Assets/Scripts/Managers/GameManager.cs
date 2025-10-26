@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
 
         if (moveToNextPhase)
         {
-            if (currentRound == 6 && currentPhase == CurrentPhase.Action)
+            if (currentRound == 4 && currentPhase == CurrentPhase.Action)
             {
                 currentPhase = CurrentPhase.Final;
                 StartCoroutine(MyUtils.SendGet("final-winner", "Based on the following situations and stories chosen by the players, decide the winner of the game.",
