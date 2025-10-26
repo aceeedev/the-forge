@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Funny Attribute
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bb610af801c4f4f40a9296ffd495c9a2, type: 2}
-  m_sharedMaterial: {fileID: -220088223660160651, guid: bb610af801c4f4f40a9296ffd495c9a2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 8283095847166713039}
   - component: {fileID: 632242757727083815}
   - component: {fileID: 2261558938621431309}
-  - component: {fileID: 8402494592768950966}
+
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -264,20 +264,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardType: 0
-  cardIndex: 1
-  player1CardGameObject: {fileID: 0}
-  player2CardGameObject: {fileID: 0}
---- !u!114 &8402494592768950966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5298825524605142608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31621f46843834e2fab69bcd553c2853, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transitionSpeed: 10
-  hoverRotation: 10
+  cardIndex: 0
