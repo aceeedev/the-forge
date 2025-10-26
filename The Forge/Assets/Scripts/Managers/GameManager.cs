@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     public int maxNumActionPhases = 2;
 
+    public bool runMovesFlag = false;
+
     public bool cardsMoving = false;
 
     public int lastTurn = -1;
@@ -212,6 +214,8 @@ public class GameManager : MonoBehaviour
             {
                 currentActionPhase[0] = ActionPhase.Beginning;
                 currentActionPhase[1] = ActionPhase.Beginning;
+
+                runMovesFlag = true;
             }
         }
     }

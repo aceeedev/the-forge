@@ -51,8 +51,24 @@ public class ActionSceneFetch : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
+    {
         LoadingObject.SetActive(loading);
+
+        if (GameManager.inst.runMovesFlag)
+        {
+            GameManager.inst.runMovesFlag = false;
+
+            StartCoroutine(RunGenerateMoves());
+        }
+    }
+
+    private IEnumerator MovesFlagRunner()
+    {
+        loading = true;
+
+        yield return StartCoroutine(RunGenerateMoves());
+
+        loading = false;
     }
 
     [Serializable]
