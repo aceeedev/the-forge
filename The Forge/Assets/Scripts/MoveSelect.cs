@@ -12,6 +12,7 @@ using TMPro;
 public class WinnerWrapper
 {
     public string winner;
+    public string explanation;
 }
 
 public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
@@ -94,7 +95,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     public IEnumerator CheckWinner(Action callback)
     {
-        string query = "Decide which player one based off of the story!";
+        string query = "Decide if player_1 or player_2 won this situation based off of the actions and moves selected! Make sure to provide a detailed explanation that says exactly why the player won and how they won from the actions selected.";
 
         yield return StartCoroutine(SendGet("decide-winner", query, (ResponseWrapper response) =>
         {
@@ -104,7 +105,11 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
                 return;
             }
 
-            string winner = JsonUtility.FromJson<WinnerWrapper>(response.response).winner;
+            WinnerWrapper winnerWrapper = JsonUtility.FromJson<WinnerWrapper>(response.response);
+
+            string winner = winnerWrapper.winner;
+
+            Debug.Log("Winning Explanation: " + winnerWrapper.explanation);
 
             if (callback != null)
             {

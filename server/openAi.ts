@@ -18,7 +18,8 @@ const MoveDescriptions = z.object({
 }).strict();
 
 const WhoWon = z.object({
-    winner: z.enum(["player_1", "player_2"]).describe("The player who won the match")
+    winner: z.enum(["player_1", "player_2"]).describe("The player who won the match"),
+    explanation: z.string().describe("A very detailed explanation of why the winner won this stage of the game.")
 }).strict();
 
 class OpenAiService {
