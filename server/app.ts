@@ -26,15 +26,15 @@ app.get('/decide-winner', async (req, res) => {
     res.send({ response })
 })
 
-app.post('/generate-image', async (req, res) => {
-    const prompt = req.body.prompt as string
+app.get('/generate-image', async (req, res) => {
+    const prompt = req.query.text as string
     const imageBuffer = await decartService.generateImage(prompt)
     res.setHeader('Content-Type', 'image/png')
     res.send(imageBuffer)
 })
 
 app.post('/edit-image', async (req, res) => {
-    const prompt = req.body.prompt as string
+    const prompt = req.body.text as string
     const image = req.body.image as Buffer
     const imageBuffer = await decartService.editImage(prompt, image)
     res.setHeader('Content-Type', 'image/png')
