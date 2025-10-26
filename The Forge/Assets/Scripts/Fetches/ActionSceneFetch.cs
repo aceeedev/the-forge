@@ -39,8 +39,6 @@ public class ActionSceneFetch : MonoBehaviour
     public GameObject player1CharacterObject;
     public GameObject player2CharacterObject;
 
-    static public GameObject winnerObject;
-
     public bool loading = false;
 
     private string baseUri = "http://localhost:3000";
@@ -48,10 +46,9 @@ public class ActionSceneFetch : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(LoadInData());
+        GameObject.FindGameObjectWithTag("WinnerText").GetComponent<TextMeshProUGUI>().text = "";
 
-        winnerObject = GameObject.FindGameObjectWithTag("WinnerText");
-        winnerObject.GetComponent<TextMeshProUGUI>().text = "";
+        StartCoroutine(LoadInData());        
     }
 
     // Update is called once per frame

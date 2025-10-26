@@ -81,7 +81,8 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     private IEnumerator ShowWinnerThenNextTurn(string winnerText, Action callback)
     {
-        ActionSceneFetch.winnerObject.GetComponent<TextMeshProUGUI>().text = winnerText;
+        Debug.Log(GameObject.FindGameObjectWithTag("WinnerText"));
+        GameObject.FindGameObjectWithTag("WinnerText").GetComponent<TextMeshProUGUI>().text = winnerText;
 
         yield return new WaitForSeconds(1f);
 
@@ -116,7 +117,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
                     winner = "Player 2 won!";
                 }
 
-                ShowWinnerThenNextTurn(winner, callback);
+                StartCoroutine(ShowWinnerThenNextTurn(winner, callback));
             }
 
         }, true));
