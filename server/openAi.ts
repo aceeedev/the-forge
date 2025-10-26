@@ -79,7 +79,8 @@ class OpenAiService {
             },
         });
 
-        return response.output_text;
+        // Return the parsed data as a JSON string
+        return JSON.stringify(response.output_parsed);
     }
 
     async decide_winner(messages: Message[]) {
@@ -95,7 +96,8 @@ class OpenAiService {
             },
         });
 
-        return response.output_text;
+        // Return the parsed data as a JSON string
+        return JSON.stringify(response.output_parsed);
     }
 }
 

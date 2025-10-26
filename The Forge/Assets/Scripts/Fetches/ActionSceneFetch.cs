@@ -117,11 +117,16 @@ public class ActionSceneFetch : MonoBehaviour
         {
             if (response == null)
             {
-                Debug.LogError("Failed to parse moves");
+                Debug.LogError("Failed to parse moves - response is null");
                 return;
             }
 
-            string[] moves = JsonUtility.FromJson<Moves>(response.response).ToArray();
+            Debug.Log($"Moves JSON to parse: {response.response}");
+            
+            // Trim whitespace from the JSON string
+            string jsonToParse = response.response.Trim();
+            
+            string[] moves = JsonUtility.FromJson<Moves>(jsonToParse).ToArray();
 
             int index = 0;
             foreach (Transform child in (playerNum == 1 ? player1ActionMenuObject : player2ActionMenuObject).transform)
