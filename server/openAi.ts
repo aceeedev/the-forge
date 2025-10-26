@@ -31,28 +31,25 @@ class OpenAiService {
             apiKey: OPENAI_API_KEY,
         });
         // see https://platform.openai.com/docs/guides/conversation-state#openai-apis-for-conversation-state
-        setTimeout(async () => {
-            this.conversation = await this.client.conversations.create();
-            this.client.responses.create({
-                conversation: this.conversation.id,
-                model: "gpt-4.1-mini",
-                input: `
-                    You are the game master narrating a story where players compete to overcome a given situation.
-                    The situation and player details (including their items, talents, clothing, and abilities) will be provided later.
-                    Your task is to describe the unfolding story based on the players' actions. When receiving the situation, you can expand on it slightly to add additional details.
-                    Be realistic about the practicality and consequences of the players' choices, but still allow for creativity and imagination.
-                    Ensure the story is told clearly, coherently, and is easy for players to follow.
-                    Diversify the actions players can take and focus on diversifying personalities and tactics to choose from such as defense, stealth, efficiency, and chaos.
-                    Further details will be shared, no need to ask for more.
-                `
-            });
-            console.log("Conversation initiated!!!");
-        }, 0);
+       this.new_conversation();
     }
 
     async new_conversation() {
         this.conversation = null;
         this.conversation = await this.client.conversations.create();
+        this.client.responses.create({
+            conversation: this.conversation.id,
+            model: "gpt-4.1-mini",
+            input: `
+                You are the Game Master, narrating a story where players compete to overcome a situation independently.
+                The situation and player details (including their items, talents, clothing, and abilities) will be provided later.
+                Your role is to describe the unfolding story as players choose 1 of 4 actions you proposein response to the situation.
+                Be realistic about the practicality and consequences of each player's actions, be sure to punish actions that realistically fail, but look for creativity and unexpected problem-solving.
+                Actions for the players should be diverse and reflect a variety of personalities, motivations, and strategies—such as stealth, efficiency, or chaos.
+                Be sure to remember players' actions as you will decide who the winner is based on their storylines.
+                Do not ask for additional details; all necessary information will be provided when needed.
+            `
+        });
         console.log("New conversation initiated!!!");
     }
     
@@ -86,7 +83,11 @@ class OpenAiService {
     }
 
     async decide_winner(messages: Message[]) {
+        if (this.conversation == null) {
+            throw new Error("Conversation not initiated");
+        }
         const response = await this.client.responses.parse({
+            conversation: this.conversation.id,
             model: "gpt-4.1-mini",
             input: messages as any,
             text: {

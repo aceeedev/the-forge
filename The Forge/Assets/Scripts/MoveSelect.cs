@@ -102,7 +102,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     public IEnumerator CheckWinner(Action callback)
     {
-        string query = "Decide if player_1 or player_2 won this situation based off of the actions and moves selected! Make sure to provide a detailed explanation that says exactly why the player won and how they won from the actions selected.";
+        string query = "Decisvely determine if player_1 or player_2 won this situation based on actions selected and how it progress their story. In 20 words or less, declare the winner and give a final summary that wraps up each player's story.";
 
         yield return StartCoroutine(SendGet("decide-winner", query, (ResponseWrapper response) =>
         {
@@ -162,7 +162,7 @@ public class MoveSelect : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         }
         else
         {
-            StartCoroutine(SendGet("prompt-response", $"The player has chosen: {move}. In a short sentence no more than 15 words explain its actual effectiveness having just been done, make it progress the scene for that character and affect future decisions, failure or partial failures are allowed, be realistic and leave room for creative approaches. Combos with previous actions should be encouraged and rewarded, but don't mention it unless the player has previously chosen them this situation.", (ResponseWrapper response) =>
+            StartCoroutine(SendGet("prompt-response", $"The player has chosen: \"{move}\". In a short sentence no more than 15 words explain the effectiveness of the action having just been performed. Make it progress the scene for that character and affect future outcomes. Remember, failure or partial failures are allowed especially if the action does not really fit. Do not mention potential risks, but do mention real consequences that happened. Narrations that combo with previous actions made by this player should included, but don't mention any combos unless the player has previously chosen an actions this situation.", (ResponseWrapper response) =>
             {
                 if (response == null)
                 {
