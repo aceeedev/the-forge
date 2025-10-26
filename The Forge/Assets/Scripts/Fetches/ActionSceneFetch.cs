@@ -26,6 +26,8 @@ public class Moves
 
 public class ActionSceneFetch : MonoBehaviour
 {
+    public GameObject LoadingObject;
+
     public GameObject DialogueObject;
 
     public GameObject player1ActionMenuObject;
@@ -46,8 +48,8 @@ public class ActionSceneFetch : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-
+    {        
+        LoadingObject.SetActive(loading);
     }
 
     [Serializable]
@@ -67,15 +69,13 @@ public class ActionSceneFetch : MonoBehaviour
     {
         loading = true;
 
-        GenerateMoveDescriptions(1);
-        GenerateMoveDescriptions(2);
-
-        yield return
+        yield return GenerateMoveDescriptions(1);
+        yield return GenerateMoveDescriptions(2);
 
         loading = false;
     }
 
-    private void GenerateMoveDescriptions(int playerNum)
+    private IEnumerator GenerateMoveDescriptions(int playerNum)
     {
         string cardsToString = playerNum == 1 ? DeckManager.inst.player1Deck.cardsToString() : DeckManager.inst.player2Deck.cardsToString();
 
@@ -103,7 +103,9 @@ public class ActionSceneFetch : MonoBehaviour
         }
         };
 
-        StartCoroutine(SendPost<ResponseWrapper>("generate-move-descriptions", JsonUtility.ToJson(container), (ResponseWrapper response) =>
+        bool done = false;
+
+        yield return StartCoroutine(SendPost<ResponseWrapper>("generate-move-descriptions", JsonUtility.ToJson(container), (ResponseWrapper response) =>
         {
             if (response == null)
             {
@@ -120,7 +122,11 @@ public class ActionSceneFetch : MonoBehaviour
 
                 index++;
             }
+
+            done = true;
         }));
+
+        yield return new WaitUntil(() => done);
     }
 
 
