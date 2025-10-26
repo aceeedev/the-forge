@@ -1374,11 +1374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9041321132285603264, guid: 290dcddf02bbdca42976c3f273a46f34, type: 3}
       propertyPath: m_CellSize.x
-      value: 280
+      value: 308
       objectReference: {fileID: 0}
     - target: {fileID: 9041321132285603264, guid: 290dcddf02bbdca42976c3f273a46f34, type: 3}
       propertyPath: m_CellSize.y
-      value: 120
+      value: 132
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2445,11 +2445,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9041321132285603264, guid: 290dcddf02bbdca42976c3f273a46f34, type: 3}
       propertyPath: m_CellSize.x
-      value: 280
+      value: 308
       objectReference: {fileID: 0}
     - target: {fileID: 9041321132285603264, guid: 290dcddf02bbdca42976c3f273a46f34, type: 3}
       propertyPath: m_CellSize.y
-      value: 120
+      value: 132
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
