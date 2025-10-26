@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public int currentRound = 1;
 
     public enum ActionPhase { Beginning, Middle, End }
-    public ActionPhase currentActionPhase = ActionPhase.Beginning;
+    public ActionPhase[] currentActionPhase;
 
     public bool cardsMoving = false;
 
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         currentPhase = CurrentPhase.Draft;
         currentRound = 1;
 
-        currentActionPhase = ActionPhase.Beginning;
+        currentActionPhase = new ActionPhase[] { ActionPhase.Beginning, ActionPhase.Beginning};
 
         // select situation and pool cards
         DeckManager.inst.SelectPoolCards();
@@ -75,23 +75,13 @@ public class GameManager : MonoBehaviour
         /// will switch the phase and scene and round++ if True
         bool moveToNextPhase = false;
 
-        // switch current turn
-        if (currentTurn == CurrentTurn.Player1)
-        {
-            currentTurn = CurrentTurn.Player2;
-        }
-        else
-        {
-            currentTurn = CurrentTurn.Player1;
-        }
-
         // if draft phase
         if (currentPhase == CurrentPhase.Draft)
         {
             if (DeckManager.inst.lastTurn)
             {
                 moveToNextPhase = true;
-            
+
                 DeckManager.inst.lastTurn = false;
             }
 
@@ -104,24 +94,53 @@ public class GameManager : MonoBehaviour
         // if action phase
         else
         {
-            switch (currentActionPhase)
+            if (currentTurn == CurrentTurn.Player1)
             {
-                case ActionPhase.Beginning:
+                switch (currentActionPhase[0])
+                {
+                    case ActionPhase.Beginning:
 
-                    currentActionPhase = ActionPhase.Middle;
+                        currentActionPhase[0] = ActionPhase.Middle;
 
-                    break;
-                case ActionPhase.Middle:
+                        break;
+                    case ActionPhase.Middle:
 
-                    currentActionPhase = ActionPhase.End;
+                        currentActionPhase[0] = ActionPhase.End;
 
-                    break;
-                case ActionPhase.End:
-
-                    moveToNextPhase = true;
-
-                    break;
+                        break;
+                }
             }
+            else
+            {
+                switch (currentActionPhase[1])
+                {
+                    case ActionPhase.Beginning:
+
+                        currentActionPhase[1] = ActionPhase.Middle;
+
+                        break;
+                    case ActionPhase.Middle:
+
+                        currentActionPhase[1] = ActionPhase.End;
+
+                        break;
+                }
+            }
+
+            if (currentActionPhase[0] == ActionPhase.End && currentActionPhase[1] == ActionPhase.End)
+            {
+                moveToNextPhase = true;
+            }
+        }
+
+        // switch current turn
+        if (currentTurn == CurrentTurn.Player1)
+        {
+            currentTurn = CurrentTurn.Player2;
+        }
+        else
+        {
+            currentTurn = CurrentTurn.Player1;
         }
 
         if (moveToNextPhase)
